@@ -7,11 +7,34 @@ import SwiftUI
 ///
 /// 显示当前应用状态和基本操作选项。
 /// Phase 1 仅包含状态显示、权限重试和退出按钮。
+/// Phase 2 增加会话状态和识别文本显示。
 struct MenuBarView: View {
     let coordinator: AppLifecycleCoordinator
+    let sessionCoordinator: SessionCoordinator
 
     var body: some View {
         Text(statusText)
+        
+        // Phase 2: 显示会话状态
+        if case .ready = coordinator.appState {
+            Text(sessionStatusText)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            
+            // 显示最近识别的文本
+            if !sessionCoordinator.lastTranscribedText.isEmpty {
+                Divider()
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("最近识别:")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Text(sessionCoordinator.lastTranscribedText)
+                        .font(.body)
+                        .lineLimit(3)
+                }
+                .padding(.vertical, 4)
+            }
+        }
 
         // 权限缺失状态 — 自动轮询中，用户也可手动操作
         if case .permissionRequired = coordinator.appState {
@@ -64,6 +87,20 @@ struct MenuBarView: View {
             return "状态: 就绪"
         case .error(let message):
             return "状态: 错误 - \(message)"
+        }
+    }
+    
+    /// Phase 2: 根据 SessionState 返回会话状态文本
+    private var sessionStatusText: String {
+        switch sessionCoordinator.state {
+        case .idle:
+            return "按住 Fn 键开始录音"
+        case .recording:
+            return "🎤 正在录音..."
+        case .transcribing:
+            return "🔄 识别中..."
+        case .error(let message):
+            return "❌ \(message)"
         }
     }
 
