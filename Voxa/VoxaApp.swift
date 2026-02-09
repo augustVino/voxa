@@ -1,7 +1,9 @@
 // MARK: - VoxaApp
 // Phase 1 基础骨架 — App 入口 + 生命周期状态管理
+// Phase 3: ModelContainer 注入 (Persona, Hotword, InputHistory)
 
 import SwiftUI
+import SwiftData
 
 // MARK: - State
 
@@ -226,8 +228,18 @@ private func showVersionAlert() {
 struct VoxaApp: App {
     @State private var coordinator: AppLifecycleCoordinator
     @State private var sessionCoordinator: SessionCoordinator
+    /// Phase 3: SwiftData 容器（人设、热词、输入历史）
+    private let modelContainer: ModelContainer
 
     init() {
+        // Phase 3: 创建 ModelContainer，schema 包含 Persona, Hotword, InputHistory
+        do {
+            let schema = Schema([Persona.self, Hotword.self, InputHistory.self])
+            let config = ModelConfiguration(isStoredInMemoryOnly: false)
+            modelContainer = try ModelContainer(for: schema, configurations: [config])
+        } catch {
+            fatalError("ModelContainer 初始化失败: \(error)")
+        }
         let permissionManager = PermissionManager()
         let keyMonitor = KeyMonitor()
         let coord = AppLifecycleCoordinator(
@@ -235,16 +247,51 @@ struct VoxaApp: App {
             keyMonitor: keyMonitor
         )
         self._coordinator = State(initialValue: coord)
-        
-        // Phase 2: SessionCoordinator (浮窗在 MainActor Task 中注入)
+
+        // Phase 3: 文本处理与注入依赖
+        let settings = AppSettings.shared
+        let hotwordCorrector = HotwordCorrector()
+        let promptProcessor = PromptProcessor(
+            apiKey: settings.llmApiKey,
+            baseURL: settings.llmBaseURL,
+            model: settings.llmModel
+        )
+        let getCurrentPrompt: () async -> String? = { [modelContainer] in
+            await MainActor.run {
+                let id = AppSettings.shared.activePersonaId
+                guard !id.isEmpty else { return nil }
+                let ctx = ModelContext(modelContainer)
+                var descriptor = FetchDescriptor<Persona>()
+                descriptor.predicate = #Predicate<Persona> { $0.id == id }
+                let list = (try? ctx.fetch(descriptor)) ?? []
+                return list.first?.prompt
+            }
+        }
+        let textProcessor = TextProcessor(
+            hotwordCorrector: hotwordCorrector,
+            promptProcessor: promptProcessor,
+            getCurrentPrompt: getCurrentPrompt
+        )
+        let textInjector = TextInjector()
+        let reloadHotwords: () async -> Void = { [modelContainer, hotwordCorrector] in
+            await MainActor.run {
+                let ctx = ModelContext(modelContainer)
+                hotwordCorrector.reload(from: ctx)
+            }
+        }
+
+        // Phase 2 + 3: SessionCoordinator (浮窗在 MainActor Task 中注入)
         let audioPipeline = AudioPipeline()
         let placeholderProvider = ZhipuSTTProvider(apiKey: "")
         let sessionCoord = SessionCoordinator(
             keyMonitor: keyMonitor,
             audioPipeline: audioPipeline,
             sttProvider: placeholderProvider,
-            settings: AppSettings.shared,
-            overlay: nil
+            settings: settings,
+            overlay: nil,
+            textProcessor: textProcessor,
+            textInjector: textInjector,
+            reloadHotwords: reloadHotwords
         )
         self._sessionCoordinator = State(initialValue: sessionCoord)
 
@@ -254,11 +301,11 @@ struct VoxaApp: App {
                 showVersionAlert()
                 return
             }
-            
+
             // Phase 5: 在 MainActor 上创建录音浮窗并注入
             let overlayPanel = OverlayPanel()
             sessionCoord.setOverlay(overlayPanel)
-            
+
             sessionCoord.start()
             await coord.initialize()
         }
@@ -270,6 +317,7 @@ struct VoxaApp: App {
                 coordinator: coordinator,
                 sessionCoordinator: sessionCoordinator
             )
+            .modelContainer(modelContainer)
         }
     }
 }
