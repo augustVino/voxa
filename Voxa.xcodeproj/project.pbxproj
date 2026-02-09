@@ -7,6 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		073E41252F3985D90088A4CF /* AudioError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E41202F3985D90088A4CF /* AudioError.swift */; };
+		073E41262F3985D90088A4CF /* AudioEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E411F2F3985D90088A4CF /* AudioEncoder.swift */; };
+		073E41272F3985D90088A4CF /* AudioFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E41212F3985D90088A4CF /* AudioFormat.swift */; };
+		073E41282F3985D90088A4CF /* AudioLevelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E41222F3985D90088A4CF /* AudioLevelProvider.swift */; };
+		073E41292F3985D90088A4CF /* AudioCapturing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E411E2F3985D90088A4CF /* AudioCapturing.swift */; };
+		073E412A2F3985D90088A4CF /* AudioPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E41232F3985D90088A4CF /* AudioPipeline.swift */; };
+		073E41322F3985EB0088A4CF /* STTError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E412E2F3985EB0088A4CF /* STTError.swift */; };
+		073E41332F3985EB0088A4CF /* SessionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E412B2F3985EB0088A4CF /* SessionCoordinator.swift */; };
+		073E41342F3985EB0088A4CF /* ZhipuSTTProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E41302F3985EB0088A4CF /* ZhipuSTTProvider.swift */; };
+		073E41352F3985EB0088A4CF /* STTProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E412F2F3985EB0088A4CF /* STTProvider.swift */; };
+		073E41362F3985EB0088A4CF /* MultipartFormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E412D2F3985EB0088A4CF /* MultipartFormData.swift */; };
+		073E41392F3985F70088A4CF /* OverlayPresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E41372F3985F70088A4CF /* OverlayPresenting.swift */; };
+		073E41432F3986A10088A4CF /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E41402F3986A10088A4CF /* WaveformView.swift */; };
+		073E41442F3986A10088A4CF /* RecordingOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E41412F3986A10088A4CF /* RecordingOverlayView.swift */; };
+		073E41452F3986A10088A4CF /* OverlayPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E41422F3986A10088A4CF /* OverlayPanel.swift */; };
+		073E413C2F39862B0088A4CF /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E413A2F39862B0088A4CF /* AppSettings.swift */; };
 		B100000000000000000001 /* VoxaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100000000000000000001 /* VoxaApp.swift */; };
 		B100000000000000000002 /* KeyMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100000000000000000002 /* KeyMonitor.swift */; };
 		B100000000000000000003 /* KeyMonitorError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100000000000000000003 /* KeyMonitorError.swift */; };
@@ -28,6 +44,22 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		073E411E2F3985D90088A4CF /* AudioCapturing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioCapturing.swift; sourceTree = "<group>"; };
+		073E411F2F3985D90088A4CF /* AudioEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEncoder.swift; sourceTree = "<group>"; };
+		073E41202F3985D90088A4CF /* AudioError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioError.swift; sourceTree = "<group>"; };
+		073E41212F3985D90088A4CF /* AudioFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFormat.swift; sourceTree = "<group>"; };
+		073E41222F3985D90088A4CF /* AudioLevelProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioLevelProvider.swift; sourceTree = "<group>"; };
+		073E41232F3985D90088A4CF /* AudioPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPipeline.swift; sourceTree = "<group>"; };
+		073E412B2F3985EB0088A4CF /* SessionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionCoordinator.swift; sourceTree = "<group>"; };
+		073E412D2F3985EB0088A4CF /* MultipartFormData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartFormData.swift; sourceTree = "<group>"; };
+		073E412E2F3985EB0088A4CF /* STTError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STTError.swift; sourceTree = "<group>"; };
+		073E412F2F3985EB0088A4CF /* STTProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STTProvider.swift; sourceTree = "<group>"; };
+		073E41302F3985EB0088A4CF /* ZhipuSTTProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZhipuSTTProvider.swift; sourceTree = "<group>"; };
+		073E41372F3985F70088A4CF /* OverlayPresenting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayPresenting.swift; sourceTree = "<group>"; };
+		073E41402F3986A10088A4CF /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
+		073E41412F3986A10088A4CF /* RecordingOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingOverlayView.swift; sourceTree = "<group>"; };
+		073E41422F3986A10088A4CF /* OverlayPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayPanel.swift; sourceTree = "<group>"; };
+		073E413A2F39862B0088A4CF /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		A100000000000000000001 /* VoxaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoxaApp.swift; sourceTree = "<group>"; };
 		A100000000000000000002 /* KeyMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyMonitor.swift; sourceTree = "<group>"; };
 		A100000000000000000003 /* KeyMonitorError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyMonitorError.swift; sourceTree = "<group>"; };
@@ -60,7 +92,58 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C100000000000000000001 /* = */ = {
+		073E41242F3985D90088A4CF /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				073E411E2F3985D90088A4CF /* AudioCapturing.swift */,
+				073E411F2F3985D90088A4CF /* AudioEncoder.swift */,
+				073E41202F3985D90088A4CF /* AudioError.swift */,
+				073E41212F3985D90088A4CF /* AudioFormat.swift */,
+				073E41222F3985D90088A4CF /* AudioLevelProvider.swift */,
+				073E41232F3985D90088A4CF /* AudioPipeline.swift */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		073E412C2F3985EB0088A4CF /* Session */ = {
+			isa = PBXGroup;
+			children = (
+				073E412B2F3985EB0088A4CF /* SessionCoordinator.swift */,
+			);
+			path = Session;
+			sourceTree = "<group>";
+		};
+		073E41312F3985EB0088A4CF /* STT */ = {
+			isa = PBXGroup;
+			children = (
+				073E412D2F3985EB0088A4CF /* MultipartFormData.swift */,
+				073E412E2F3985EB0088A4CF /* STTError.swift */,
+				073E412F2F3985EB0088A4CF /* STTProvider.swift */,
+				073E41302F3985EB0088A4CF /* ZhipuSTTProvider.swift */,
+			);
+			path = STT;
+			sourceTree = "<group>";
+		};
+		073E41382F3985F70088A4CF /* Overlay */ = {
+			isa = PBXGroup;
+			children = (
+				073E41372F3985F70088A4CF /* OverlayPresenting.swift */,
+				073E41402F3986A10088A4CF /* WaveformView.swift */,
+				073E41412F3986A10088A4CF /* RecordingOverlayView.swift */,
+				073E41422F3986A10088A4CF /* OverlayPanel.swift */,
+			);
+			path = Overlay;
+			sourceTree = "<group>";
+		};
+		073E413B2F39862B0088A4CF /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				073E413A2F39862B0088A4CF /* AppSettings.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		C100000000000000000001 = {
 			isa = PBXGroup;
 			children = (
 				C100000000000000000002 /* Voxa */,
@@ -71,6 +154,7 @@
 		C100000000000000000002 /* Voxa */ = {
 			isa = PBXGroup;
 			children = (
+				073E413B2F39862B0088A4CF /* Services */,
 				A100000000000000000001 /* VoxaApp.swift */,
 				A100000000000000000007 /* Info.plist */,
 				A100000000000000000008 /* Voxa.entitlements */,
@@ -85,6 +169,9 @@
 		C100000000000000000003 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				073E412C2F3985EB0088A4CF /* Session */,
+				073E41312F3985EB0088A4CF /* STT */,
+				073E41242F3985D90088A4CF /* Audio */,
 				C100000000000000000004 /* KeyMonitor */,
 				C100000000000000000005 /* Permissions */,
 			);
@@ -111,6 +198,7 @@
 		C100000000000000000006 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				073E41382F3985F70088A4CF /* Overlay */,
 				C100000000000000000007 /* MenuBar */,
 			);
 			path = UI;
@@ -243,10 +331,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				B100000000000000000001 /* VoxaApp.swift in Sources */,
+				073E413C2F39862B0088A4CF /* AppSettings.swift in Sources */,
 				B100000000000000000002 /* KeyMonitor.swift in Sources */,
 				B100000000000000000003 /* KeyMonitorError.swift in Sources */,
 				B100000000000000000004 /* PermissionManager.swift in Sources */,
 				B100000000000000000005 /* MenuBarView.swift in Sources */,
+				073E41252F3985D90088A4CF /* AudioError.swift in Sources */,
+				073E41262F3985D90088A4CF /* AudioEncoder.swift in Sources */,
+				073E41272F3985D90088A4CF /* AudioFormat.swift in Sources */,
+				073E41322F3985EB0088A4CF /* STTError.swift in Sources */,
+				073E41332F3985EB0088A4CF /* SessionCoordinator.swift in Sources */,
+				073E41392F3985F70088A4CF /* OverlayPresenting.swift in Sources */,
+				073E41432F3986A10088A4CF /* WaveformView.swift in Sources */,
+				073E41442F3986A10088A4CF /* RecordingOverlayView.swift in Sources */,
+				073E41452F3986A10088A4CF /* OverlayPanel.swift in Sources */,
+				073E41342F3985EB0088A4CF /* ZhipuSTTProvider.swift in Sources */,
+				073E41352F3985EB0088A4CF /* STTProvider.swift in Sources */,
+				073E41362F3985EB0088A4CF /* MultipartFormData.swift in Sources */,
+				073E41282F3985D90088A4CF /* AudioLevelProvider.swift in Sources */,
+				073E41292F3985D90088A4CF /* AudioCapturing.swift in Sources */,
+				073E412A2F3985D90088A4CF /* AudioPipeline.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -511,7 +615,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
 	};
 	rootObject = F100000000000000000001 /* Project object */;
 }

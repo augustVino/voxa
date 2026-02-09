@@ -188,19 +188,10 @@ final class AppLifecycleCoordinator: AppLifecycleCoordinating {
     }
 
     /// 启动事件消费循环
+    /// Phase 2: 事件消费由 SessionCoordinator 接管
     private func startEventConsumption() {
-        eventConsumptionTask = Task { [keyMonitor] in
-            for await event in keyMonitor.events {
-                switch event {
-                case .fnDown:
-                    print("Recording...")
-                case .fnUp:
-                    print("Stopped")
-                case .shortcutTriggered(let id):
-                    print("Shortcut triggered: \(id)")
-                }
-            }
-        }
+        // Phase 2: SessionCoordinator 将在 VoxaApp.init 中启动
+        // 这里保留空实现以保持接口兼容
     }
 
     nonisolated deinit {
@@ -234,6 +225,7 @@ private func showVersionAlert() {
 @main
 struct VoxaApp: App {
     @State private var coordinator: AppLifecycleCoordinator
+    @State private var sessionCoordinator: SessionCoordinator
 
     init() {
         let permissionManager = PermissionManager()
@@ -243,21 +235,41 @@ struct VoxaApp: App {
             keyMonitor: keyMonitor
         )
         self._coordinator = State(initialValue: coord)
+        
+        // Phase 2: SessionCoordinator (浮窗在 MainActor Task 中注入)
+        let audioPipeline = AudioPipeline()
+        let placeholderProvider = ZhipuSTTProvider(apiKey: "")
+        let sessionCoord = SessionCoordinator(
+            keyMonitor: keyMonitor,
+            audioPipeline: audioPipeline,
+            sttProvider: placeholderProvider,
+            settings: AppSettings.shared,
+            overlay: nil
+        )
+        self._sessionCoordinator = State(initialValue: sessionCoord)
 
-        // 应用启动时立即初始化，不等待用户点击菜单栏图标
-        // MenuBarExtra 内容视图是懒加载的，不能依赖 .task 触发初始化
+        // 应用启动时立即初始化
         Task { @MainActor in
             guard checkMacOSVersion() else {
                 showVersionAlert()
                 return
             }
+            
+            // Phase 5: 在 MainActor 上创建录音浮窗并注入
+            let overlayPanel = OverlayPanel()
+            sessionCoord.setOverlay(overlayPanel)
+            
+            sessionCoord.start()
             await coord.initialize()
         }
     }
 
     var body: some Scene {
         MenuBarExtra("Voxa", systemImage: "mic.circle.fill") {
-            MenuBarView(coordinator: coordinator)
+            MenuBarView(
+                coordinator: coordinator,
+                sessionCoordinator: sessionCoordinator
+            )
         }
     }
 }
