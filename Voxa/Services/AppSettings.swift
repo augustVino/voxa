@@ -9,19 +9,26 @@ import Foundation
 import SwiftUI
 
 /// 应用配置管理
-/// Phase 2 使用 UserDefaults 存储 API Key (临时方案)
-/// Phase 4 迁移到 Keychain 加密存储
+/// Phase 4 T019: API Key 存 Keychain，其余配置 UserDefaults
 @Observable
 @MainActor
 final class AppSettings {
     // MARK: - STT 配置
 
-    /// STT API Key (智谱 API)
-    /// ⚠️ Phase 2 临时方案:使用 UserDefaults 明文存储
-    /// Phase 4 改进:迁移到 Keychain
-    @ObservationIgnored
-    @AppStorage("sttApiKey")
-    var sttApiKey: String = ""
+    /// STT API Key (智谱 API)，存 Keychain
+    private var _sttApiKeyCache: String = ""
+    var sttApiKey: String {
+        get {
+            if _sttApiKeyCache.isEmpty, let k = KeychainService.get(key: .sttApiKey) {
+                _sttApiKeyCache = k
+            }
+            return _sttApiKeyCache
+        }
+        set {
+            KeychainService.set(key: .sttApiKey, value: newValue)
+            _sttApiKeyCache = newValue
+        }
+    }
 
     /// STT 服务 Base URL
     @ObservationIgnored
@@ -40,10 +47,20 @@ final class AppSettings {
 
     // MARK: - LLM 配置 (Phase 3 润色)
 
-    /// LLM API Key（智谱等）
-    @ObservationIgnored
-    @AppStorage("llmApiKey")
-    var llmApiKey: String = ""
+    /// LLM API Key（智谱等），存 Keychain
+    private var _llmApiKeyCache: String = ""
+    var llmApiKey: String {
+        get {
+            if _llmApiKeyCache.isEmpty, let k = KeychainService.get(key: .llmApiKey) {
+                _llmApiKeyCache = k
+            }
+            return _llmApiKeyCache
+        }
+        set {
+            KeychainService.set(key: .llmApiKey, value: newValue)
+            _llmApiKeyCache = newValue
+        }
+    }
 
     /// LLM Base URL（智谱 GLM-4 对话）
     @ObservationIgnored
@@ -59,6 +76,33 @@ final class AppSettings {
     @ObservationIgnored
     @AppStorage("activePersonaId")
     var activePersonaId: String = ""
+
+    // MARK: - 通用设置 (Phase 4)
+
+    /// 是否启用 Fn 单键触发录音
+    @ObservationIgnored
+    @AppStorage("fnKeyEnabled")
+    var fnKeyEnabled: Bool = true
+
+    /// 备用快捷键（与 KeyboardShortcuts 一致格式，如 "⌃⌥Space"）
+    @ObservationIgnored
+    @AppStorage("customShortcut")
+    var customShortcut: String = ""
+
+    /// 开机自启动
+    @ObservationIgnored
+    @AppStorage("launchAtLogin")
+    var launchAtLogin: Bool = false
+
+    /// 显示 Dock 图标
+    @ObservationIgnored
+    @AppStorage("showDockIcon")
+    var showDockIcon: Bool = false
+
+    /// 自动添加热词（识别后自动加入热词表）
+    @ObservationIgnored
+    @AppStorage("autoAddHotwords")
+    var autoAddHotwords: Bool = false
 
     // MARK: - 浮窗配置
 
@@ -99,5 +143,9 @@ final class AppSettings {
 
     static let shared = AppSettings()
 
-    init() {}
+    init() {
+        KeychainService.migrateFromUserDefaultsIfNeeded()
+        _sttApiKeyCache = KeychainService.get(key: .sttApiKey) ?? ""
+        _llmApiKeyCache = KeychainService.get(key: .llmApiKey) ?? ""
+    }
 }

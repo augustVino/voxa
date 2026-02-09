@@ -19,10 +19,12 @@
 		073E41352F3985EB0088A4CF /* STTProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E412F2F3985EB0088A4CF /* STTProvider.swift */; };
 		073E41362F3985EB0088A4CF /* MultipartFormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E412D2F3985EB0088A4CF /* MultipartFormData.swift */; };
 		073E41392F3985F70088A4CF /* OverlayPresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E41372F3985F70088A4CF /* OverlayPresenting.swift */; };
+		073E413C2F39862B0088A4CF /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E413A2F39862B0088A4CF /* AppSettings.swift */; };
 		073E41432F3986A10088A4CF /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E41402F3986A10088A4CF /* WaveformView.swift */; };
 		073E41442F3986A10088A4CF /* RecordingOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E41412F3986A10088A4CF /* RecordingOverlayView.swift */; };
 		073E41452F3986A10088A4CF /* OverlayPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E41422F3986A10088A4CF /* OverlayPanel.swift */; };
-		073E413C2F39862B0088A4CF /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E413A2F39862B0088A4CF /* AppSettings.swift */; };
+		07983A4F2F39CD7D00BD1EE1 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 07983A4E2F39CD7D00BD1EE1 /* KeyboardShortcuts */; };
+		07983A522F39CF1A00BD1EE1 /* KeyboardShortcutName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07983A502F39CF1A00BD1EE1 /* KeyboardShortcutName.swift */; };
 		B100000000000000000001 /* VoxaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100000000000000000001 /* VoxaApp.swift */; };
 		B100000000000000000002 /* KeyMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100000000000000000002 /* KeyMonitor.swift */; };
 		B100000000000000000003 /* KeyMonitorError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100000000000000000003 /* KeyMonitorError.swift */; };
@@ -44,6 +46,15 @@
 		E3B10000000000000000B /* TextProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A10000000000000000B /* TextProcessor.swift */; };
 		E3B10000000000000000C /* TextProcessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A10000000000000000C /* TextProcessorTests.swift */; };
 		E3B10000000000000000D /* SessionCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A10000000000000000D /* SessionCoordinatorTests.swift */; };
+		F4B1000000000000000001 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A1000000000000000001 /* SettingsView.swift */; };
+		F4B2000000000000000001 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A2000000000000000001 /* GeneralSettingsView.swift */; };
+		F4B3000000000000000001 /* ModelSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A3000000000000000001 /* ModelSettingsView.swift */; };
+		F4B4000000000000000001 /* PersonaSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A4000000000000000001 /* PersonaSettingsView.swift */; };
+		F4B5000000000000000001 /* HotwordSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A5000000000000000001 /* HotwordSettingsView.swift */; };
+		F4B6000000000000000001 /* HistorySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A6000000000000000001 /* HistorySettingsView.swift */; };
+		F4B7000000000000000001 /* LaunchAtLoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A7000000000000000001 /* LaunchAtLoginHelper.swift */; };
+		F4B8000000000000000001 /* InputHistoryCleanup.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A8000000000000000001 /* InputHistoryCleanup.swift */; };
+		F4B9000000000000000001 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A9000000000000000001 /* KeychainService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,10 +80,11 @@
 		073E412F2F3985EB0088A4CF /* STTProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STTProvider.swift; sourceTree = "<group>"; };
 		073E41302F3985EB0088A4CF /* ZhipuSTTProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZhipuSTTProvider.swift; sourceTree = "<group>"; };
 		073E41372F3985F70088A4CF /* OverlayPresenting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayPresenting.swift; sourceTree = "<group>"; };
+		073E413A2F39862B0088A4CF /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		073E41402F3986A10088A4CF /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
 		073E41412F3986A10088A4CF /* RecordingOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingOverlayView.swift; sourceTree = "<group>"; };
 		073E41422F3986A10088A4CF /* OverlayPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayPanel.swift; sourceTree = "<group>"; };
-		073E413A2F39862B0088A4CF /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		07983A502F39CF1A00BD1EE1 /* KeyboardShortcutName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardShortcutName.swift; sourceTree = "<group>"; };
 		A100000000000000000001 /* VoxaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoxaApp.swift; sourceTree = "<group>"; };
 		A100000000000000000002 /* KeyMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyMonitor.swift; sourceTree = "<group>"; };
 		A100000000000000000003 /* KeyMonitorError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyMonitorError.swift; sourceTree = "<group>"; };
@@ -98,6 +110,15 @@
 		E3A10000000000000000B /* TextProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextProcessor.swift; sourceTree = "<group>"; };
 		E3A10000000000000000C /* TextProcessorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextProcessorTests.swift; sourceTree = "<group>"; };
 		E3A10000000000000000D /* SessionCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionCoordinatorTests.swift; sourceTree = "<group>"; };
+		F4A1000000000000000001 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		F4A2000000000000000001 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
+		F4A3000000000000000001 /* ModelSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelSettingsView.swift; sourceTree = "<group>"; };
+		F4A4000000000000000001 /* PersonaSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaSettingsView.swift; sourceTree = "<group>"; };
+		F4A5000000000000000001 /* HotwordSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotwordSettingsView.swift; sourceTree = "<group>"; };
+		F4A6000000000000000001 /* HistorySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistorySettingsView.swift; sourceTree = "<group>"; };
+		F4A7000000000000000001 /* LaunchAtLoginHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginHelper.swift; sourceTree = "<group>"; };
+		F4A8000000000000000001 /* InputHistoryCleanup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputHistoryCleanup.swift; sourceTree = "<group>"; };
+		F4A9000000000000000001 /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +126,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07983A4F2F39CD7D00BD1EE1 /* KeyboardShortcuts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,36 +161,6 @@
 			path = Session;
 			sourceTree = "<group>";
 		};
-		E3C1000000000000000001 /* TextProcessing */ = {
-			isa = PBXGroup;
-			children = (
-				E3A1000000000000000004 /* TextProcessingError.swift */,
-				E3A1000000000000000006 /* HotwordCorrector.swift */,
-				E3A10000000000000000A /* PromptProcessor.swift */,
-				E3A10000000000000000B /* TextProcessor.swift */,
-			);
-			path = TextProcessing;
-			sourceTree = "<group>";
-		};
-		E3C1000000000000000002 /* Injection */ = {
-			isa = PBXGroup;
-			children = (
-				E3A1000000000000000005 /* InjectionError.swift */,
-				E3A1000000000000000008 /* TextInjector.swift */,
-			);
-			path = Injection;
-			sourceTree = "<group>";
-		};
-		E3C1000000000000000003 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				E3A1000000000000000001 /* Persona.swift */,
-				E3A1000000000000000002 /* Hotword.swift */,
-				E3A1000000000000000003 /* InputHistory.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		073E41312F3985EB0088A4CF /* STT */ = {
 			isa = PBXGroup;
 			children = (
@@ -195,14 +187,33 @@
 			isa = PBXGroup;
 			children = (
 				073E413A2F39862B0088A4CF /* AppSettings.swift */,
+				F4A7000000000000000001 /* LaunchAtLoginHelper.swift */,
+				F4A8000000000000000001 /* InputHistoryCleanup.swift */,
+				F4A9000000000000000001 /* KeychainService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		07983A4D2F39CD7D00BD1EE1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		07983A512F39CF1A00BD1EE1 /* Keyboard */ = {
+			isa = PBXGroup;
+			children = (
+				07983A502F39CF1A00BD1EE1 /* KeyboardShortcutName.swift */,
+			);
+			path = Keyboard;
 			sourceTree = "<group>";
 		};
 		C100000000000000000001 = {
 			isa = PBXGroup;
 			children = (
 				C100000000000000000002 /* Voxa */,
+				07983A4D2F39CD7D00BD1EE1 /* Frameworks */,
 				C10000000000000000000A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -226,6 +237,7 @@
 		C100000000000000000003 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				07983A512F39CF1A00BD1EE1 /* Keyboard */,
 				073E412C2F3985EB0088A4CF /* Session */,
 				073E41312F3985EB0088A4CF /* STT */,
 				073E41242F3985D90088A4CF /* Audio */,
@@ -259,6 +271,7 @@
 			children = (
 				073E41382F3985F70088A4CF /* Overlay */,
 				C100000000000000000007 /* MenuBar */,
+				F4C1000000000000000001 /* Settings */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -299,6 +312,49 @@
 				A10000000000000000000C /* VoxaTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		E3C1000000000000000001 /* TextProcessing */ = {
+			isa = PBXGroup;
+			children = (
+				E3A1000000000000000004 /* TextProcessingError.swift */,
+				E3A1000000000000000006 /* HotwordCorrector.swift */,
+				E3A10000000000000000A /* PromptProcessor.swift */,
+				E3A10000000000000000B /* TextProcessor.swift */,
+			);
+			path = TextProcessing;
+			sourceTree = "<group>";
+		};
+		E3C1000000000000000002 /* Injection */ = {
+			isa = PBXGroup;
+			children = (
+				E3A1000000000000000005 /* InjectionError.swift */,
+				E3A1000000000000000008 /* TextInjector.swift */,
+			);
+			path = Injection;
+			sourceTree = "<group>";
+		};
+		E3C1000000000000000003 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E3A1000000000000000001 /* Persona.swift */,
+				E3A1000000000000000002 /* Hotword.swift */,
+				E3A1000000000000000003 /* InputHistory.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		F4C1000000000000000001 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				F4A1000000000000000001 /* SettingsView.swift */,
+				F4A2000000000000000001 /* GeneralSettingsView.swift */,
+				F4A3000000000000000001 /* ModelSettingsView.swift */,
+				F4A4000000000000000001 /* PersonaSettingsView.swift */,
+				F4A5000000000000000001 /* HotwordSettingsView.swift */,
+				F4A6000000000000000001 /* HistorySettingsView.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -367,6 +423,9 @@
 				"zh-Hans",
 			);
 			mainGroup = C100000000000000000001;
+			packageReferences = (
+				07983A4C2F39C88400BD1EE1 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
+			);
 			productRefGroup = C10000000000000000000A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -412,6 +471,7 @@
 				073E41352F3985EB0088A4CF /* STTProvider.swift in Sources */,
 				073E41362F3985EB0088A4CF /* MultipartFormData.swift in Sources */,
 				073E41282F3985D90088A4CF /* AudioLevelProvider.swift in Sources */,
+				07983A522F39CF1A00BD1EE1 /* KeyboardShortcutName.swift in Sources */,
 				073E41292F3985D90088A4CF /* AudioCapturing.swift in Sources */,
 				073E412A2F3985D90088A4CF /* AudioPipeline.swift in Sources */,
 				E3B1000000000000000001 /* Persona.swift in Sources */,
@@ -423,6 +483,15 @@
 				E3B1000000000000000008 /* TextInjector.swift in Sources */,
 				E3B10000000000000000A /* PromptProcessor.swift in Sources */,
 				E3B10000000000000000B /* TextProcessor.swift in Sources */,
+				F4B1000000000000000001 /* SettingsView.swift in Sources */,
+				F4B2000000000000000001 /* GeneralSettingsView.swift in Sources */,
+				F4B3000000000000000001 /* ModelSettingsView.swift in Sources */,
+				F4B4000000000000000001 /* PersonaSettingsView.swift in Sources */,
+				F4B5000000000000000001 /* HotwordSettingsView.swift in Sources */,
+				F4B6000000000000000001 /* HistorySettingsView.swift in Sources */,
+				F4B7000000000000000001 /* LaunchAtLoginHelper.swift in Sources */,
+				F4B8000000000000000001 /* InputHistoryCleanup.swift in Sources */,
+				F4B9000000000000000001 /* KeychainService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -691,6 +760,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		07983A4C2F39C88400BD1EE1 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.4.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		07983A4E2F39CD7D00BD1EE1 /* KeyboardShortcuts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 07983A4C2F39C88400BD1EE1 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
+			productName = KeyboardShortcuts;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F100000000000000000001 /* Project object */;
 }
