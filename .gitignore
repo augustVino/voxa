@@ -1,5 +1,4 @@
 # Spec & Tool directories
-.claude
 .specify
 specs
 docs
@@ -47,4 +46,3 @@ Package.resolved
 *.dSYM
 *.app
 *.profraw
-CLAUDE.md

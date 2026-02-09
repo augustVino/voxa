@@ -1,8 +1,10 @@
 // MARK: - KeyMonitor
 // Phase 1 基础骨架 — 基于 NSEvent 的全局 Fn 键监听
+// Phase 4: 集成 KeyboardShortcuts 库支持自定义快捷键
 
 import Foundation
 import AppKit
+import KeyboardShortcuts
 
 // MARK: - Events
 
@@ -12,8 +14,8 @@ enum KeyEvent: Sendable, Equatable {
     case fnDown
     /// Fn 键释放
     case fnUp
-    /// 自定义快捷键触发（Phase 4 扩展预留）
-    case shortcutTriggered(id: String)
+    /// 自定义快捷键触发
+    case shortcutTriggered
 }
 
 // MARK: - Protocol
@@ -44,7 +46,7 @@ protocol KeyMonitoring: Sendable {
 
 // MARK: - Implementation
 
-/// 基于 NSEvent 的全局 Fn 键监听器
+/// 基于 NSEvent 的全局 Fn 键监听器 + KeyboardShortcuts 集成
 ///
 /// 通过 `NSEvent.addGlobalMonitorForEvents` + `addLocalMonitorForEvents`
 /// 监听 `.flagsChanged` 事件，检测 Fn/Globe (🌐) 键的按下与释放。
@@ -69,6 +71,9 @@ final class KeyMonitor: KeyMonitoring, @unchecked Sendable {
 
     /// NSEvent 本地监听器（监听当前 App 中的事件）
     private var localEventMonitor: Any?
+
+    /// KeyboardShortcuts 监听任务
+    private var shortcutListenerTask: Task<Void, Never>?
 
     /// 监听运行状态
     private var isMonitoring = false
@@ -105,6 +110,9 @@ final class KeyMonitor: KeyMonitoring, @unchecked Sendable {
             throw KeyMonitorError.monitorCreationFailed
         }
 
+        // 启动自定义快捷键监听
+        startShortcutListener()
+
         isMonitoring = true
     }
 
@@ -119,11 +127,25 @@ final class KeyMonitor: KeyMonitoring, @unchecked Sendable {
                 NSEvent.removeMonitor(monitor)
                 localEventMonitor = nil
             }
+            shortcutListenerTask?.cancel()
+            shortcutListenerTask = nil
             isMonitoring = false
         }
 
         continuation?.finish()
         continuation = nil
+    }
+
+    /// 启动自定义快捷键监听
+    private func startShortcutListener() {
+        shortcutListenerTask = Task { [weak self] in
+            for await event in KeyboardShortcuts.events(for: .recordAudio) {
+                // 只监听 keyUp 事件（按键释放时触发）
+                if event == .keyUp {
+                    self?.continuation?.yield(.shortcutTriggered)
+                }
+            }
+        }
     }
 
     // MARK: - Private

@@ -280,6 +280,29 @@ struct VoxaApp: App {
             }
         }
 
+        // Phase 4: 会话成功后保存历史并执行 30 天清理
+        let saveHistory: (String, String, TimeInterval) async -> Void = { [modelContainer] rawText, processedText, duration in
+            await MainActor.run {
+                let ctx = ModelContext(modelContainer)
+                let personaId = AppSettings.shared.activePersonaId
+                var personaName: String?
+                if !personaId.isEmpty {
+                    var fd = FetchDescriptor<Persona>()
+                    fd.predicate = #Predicate<Persona> { $0.id == personaId }
+                    personaName = (try? ctx.fetch(fd).first)?.name
+                }
+                let record = InputHistory(
+                    rawText: rawText,
+                    processedText: processedText,
+                    personaName: personaName,
+                    duration: duration
+                )
+                ctx.insert(record)
+                try? ctx.save()
+                InputHistoryCleanup.run(context: ctx)
+            }
+        }
+
         // Phase 2 + 3: SessionCoordinator (浮窗在 MainActor Task 中注入)
         let audioPipeline = AudioPipeline()
         let placeholderProvider = ZhipuSTTProvider(apiKey: "")
@@ -291,11 +314,13 @@ struct VoxaApp: App {
             overlay: nil,
             textProcessor: textProcessor,
             textInjector: textInjector,
-            reloadHotwords: reloadHotwords
+            reloadHotwords: reloadHotwords,
+            saveHistory: saveHistory
         )
         self._sessionCoordinator = State(initialValue: sessionCoord)
 
-        // 应用启动时立即初始化
+        // 应用启动时立即初始化（捕获局部变量避免 escaping closure 捕获 self）
+        let containerForStartup = modelContainer
         Task { @MainActor in
             guard checkMacOSVersion() else {
                 showVersionAlert()
@@ -308,6 +333,13 @@ struct VoxaApp: App {
 
             sessionCoord.start()
             await coord.initialize()
+            // Phase 4: 同步开机自启动实际状态到设置
+            LaunchAtLoginHelper.syncToSettings()
+            // Phase 4: 同步 Dock 图标显示状态（直接内联）
+            NSApp.setActivationPolicy(AppSettings.shared.showDockIcon ? .regular : .accessory)
+            // Phase 4: 启动时执行一次 30 天历史清理
+            let ctx = ModelContext(containerForStartup)
+            InputHistoryCleanup.run(context: ctx)
         }
     }
 
@@ -318,6 +350,12 @@ struct VoxaApp: App {
                 sessionCoordinator: sessionCoordinator
             )
             .modelContainer(modelContainer)
+        }
+        // Phase 4: 设置面板，约 600×450，菜单栏「设置…」可打开
+        Settings {
+            SettingsView()
+                .frame(minWidth: 600, minHeight: 450)
+                .modelContainer(modelContainer)
         }
     }
 }

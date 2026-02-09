@@ -65,6 +65,9 @@ struct MenuBarView: View {
         }
 
         Divider()
+        SettingsLink {
+            Text("设置…")
+        }
         Button("退出 Voxa") {
             NSApplication.shared.terminate(nil)
         }
