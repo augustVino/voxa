@@ -1,0 +1,50 @@
+# Spec & Tool directories
+.claude
+.specify
+specs
+docs
+
+# macOS
+.DS_Store
+Thumbs.db
+
+# Xcode
+DerivedData/
+build/
+xcuserdata/
+*.xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xccheckout
+*.moved-aside
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Packages/
+Package.resolved
+
+# Swift
+*.swp
+*.swo
+
+# IDE
+.vscode/
+.idea/
+*.tmp
+
+# Environment
+.env*
+
+# Build artifacts
+*.ipa
+*.dSYM.zip
+*.dSYM
+*.app
+*.profraw
+CLAUDE.md
