@@ -11,13 +11,19 @@ import Foundation
 enum SessionState: Equatable, Sendable {
     /// 空闲状态
     case idle
-    
+
     /// 录音中
     case recording
-    
+
     /// 识别中
     case transcribing
-    
+
+    /// 处理中（热词/润色）
+    case processing
+
+    /// 注入中
+    case injecting
+
     /// 错误状态
     case error(String)
 }
@@ -33,6 +39,10 @@ final class SessionCoordinator: @unchecked Sendable {
     private var sttProvider: STTProvider
     private let settings: AppSettings
     private var overlay: (any OverlayPresenting)?
+    private let textProcessor: TextProcessor
+    private let textInjector: TextInjector
+    /// 在文本处理前刷新热词（由调用方在 MainActor 上执行，可捕获 ModelContainer）
+    private let reloadHotwords: () async -> Void
     
     // MARK: - State
     
@@ -49,13 +59,19 @@ final class SessionCoordinator: @unchecked Sendable {
         audioPipeline: AudioCapturing,
         sttProvider: STTProvider,
         settings: AppSettings,
-        overlay: (any OverlayPresenting)? = nil
+        overlay: (any OverlayPresenting)? = nil,
+        textProcessor: TextProcessor,
+        textInjector: TextInjector,
+        reloadHotwords: @escaping () async -> Void
     ) {
         self.keyMonitor = keyMonitor
         self.audioPipeline = audioPipeline
         self.sttProvider = sttProvider
         self.settings = settings
         self.overlay = overlay
+        self.textProcessor = textProcessor
+        self.textInjector = textInjector
+        self.reloadHotwords = reloadHotwords
     }
     
     // MARK: - Lifecycle
@@ -112,14 +128,17 @@ final class SessionCoordinator: @unchecked Sendable {
         
         print("[SessionCoordinator] 🎤 Fn 键按下,开始录音")
         state = .recording
-        
+
+        // 先显示浮窗，再启动录音，避免首次 startCapture（AVAudioEngine 冷启动）过慢导致长时间无反馈
+        if let overlay = overlay {
+            let position = await MainActor.run { settings.overlayPosition }
+            await overlay.show(at: position, animated: true)
+        }
+
         do {
             try await audioPipeline.startCapture()
-            
-            // 显示录音浮窗并连接音量流
+
             if let overlay = overlay {
-                let position = await MainActor.run { settings.overlayPosition }
-                await overlay.show(at: position, animated: true)
                 let stream = await audioPipeline.audioLevelStream()
                 await overlay.setLevelStream(stream)
             }
@@ -127,7 +146,7 @@ final class SessionCoordinator: @unchecked Sendable {
             print("[SessionCoordinator] ❌ 录音启动失败: \(error)")
             state = .error(error.localizedDescription)
             await overlay?.hide(animated: true)
-            
+
             Task {
                 try? await Task.sleep(for: .seconds(2))
                 await recoverToIdle()
@@ -206,9 +225,48 @@ final class SessionCoordinator: @unchecked Sendable {
             
             print("[SessionCoordinator] ✅ 识别完成: \(text)")
             lastTranscribedText = text
+
+            await reloadHotwords()
+            state = .processing
+            await overlay?.updateStatus("处理中...")
+
+            let finalText: String
+            do {
+                finalText = try await textProcessor.process(rawText: text)
+            } catch {
+                print("[SessionCoordinator] ❌ 文本处理失败: \(error)")
+                state = .error("处理失败")
+                await overlay?.hide(animated: true)
+                Task {
+                    try? await Task.sleep(for: .seconds(2))
+                    await recoverToIdle()
+                }
+                return
+            }
+
+            if finalText.isEmpty {
+                state = .idle
+                await overlay?.hide(animated: true)
+                return
+            }
+
+            state = .injecting
+            await overlay?.updateStatus("注入中...")
+
+            let injected = textInjector.inject(finalText)
+            if !injected {
+                state = .error("注入失败")
+                await overlay?.hide(animated: true)
+                Task {
+                    try? await Task.sleep(for: .seconds(2))
+                    await recoverToIdle()
+                }
+                return
+            }
+
             state = .idle
             await overlay?.hide(animated: true)
-            
+
         } catch let error as STTError {
             print("[SessionCoordinator] ❌ 识别失败: \(error)")
             

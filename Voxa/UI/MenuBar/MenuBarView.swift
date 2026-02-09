@@ -14,13 +14,13 @@ struct MenuBarView: View {
 
     var body: some View {
         Text(statusText)
-        
+
         // Phase 2: 显示会话状态
         if case .ready = coordinator.appState {
             Text(sessionStatusText)
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            
+
             // 显示最近识别的文本
             if !sessionCoordinator.lastTranscribedText.isEmpty {
                 Divider()
@@ -89,7 +89,7 @@ struct MenuBarView: View {
             return "状态: 错误 - \(message)"
         }
     }
-    
+
     /// Phase 2: 根据 SessionState 返回会话状态文本
     private var sessionStatusText: String {
         switch sessionCoordinator.state {
@@ -99,6 +99,10 @@ struct MenuBarView: View {
             return "🎤 正在录音..."
         case .transcribing:
             return "🔄 识别中..."
+        case .processing:
+            return "🔄 处理中..."
+        case .injecting:
+            return "🔄 注入中..."
         case .error(let message):
             return "❌ \(message)"
         }

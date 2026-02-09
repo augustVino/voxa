@@ -31,6 +31,19 @@
 		B100000000000000000006 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A100000000000000000006 /* Assets.xcassets */; };
 		B100000000000000000009 /* KeyMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100000000000000000009 /* KeyMonitorTests.swift */; };
 		B10000000000000000000A /* PermissionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000A /* PermissionManagerTests.swift */; };
+		E3B1000000000000000001 /* Persona.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000001 /* Persona.swift */; };
+		E3B1000000000000000002 /* Hotword.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000002 /* Hotword.swift */; };
+		E3B1000000000000000003 /* InputHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000003 /* InputHistory.swift */; };
+		E3B1000000000000000004 /* TextProcessingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000004 /* TextProcessingError.swift */; };
+		E3B1000000000000000005 /* InjectionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000005 /* InjectionError.swift */; };
+		E3B1000000000000000006 /* HotwordCorrector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000006 /* HotwordCorrector.swift */; };
+		E3B1000000000000000007 /* HotwordCorrectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000007 /* HotwordCorrectorTests.swift */; };
+		E3B1000000000000000008 /* TextInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000008 /* TextInjector.swift */; };
+		E3B1000000000000000009 /* TextInjectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000009 /* TextInjectorTests.swift */; };
+		E3B10000000000000000A /* PromptProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A10000000000000000A /* PromptProcessor.swift */; };
+		E3B10000000000000000B /* TextProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A10000000000000000B /* TextProcessor.swift */; };
+		E3B10000000000000000C /* TextProcessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A10000000000000000C /* TextProcessorTests.swift */; };
+		E3B10000000000000000D /* SessionCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A10000000000000000D /* SessionCoordinatorTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +85,19 @@
 		A10000000000000000000A /* PermissionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionManagerTests.swift; sourceTree = "<group>"; };
 		A10000000000000000000B /* Voxa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Voxa.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10000000000000000000C /* VoxaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VoxaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E3A1000000000000000001 /* Persona.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persona.swift; sourceTree = "<group>"; };
+		E3A1000000000000000002 /* Hotword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hotword.swift; sourceTree = "<group>"; };
+		E3A1000000000000000003 /* InputHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputHistory.swift; sourceTree = "<group>"; };
+		E3A1000000000000000004 /* TextProcessingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextProcessingError.swift; sourceTree = "<group>"; };
+		E3A1000000000000000005 /* InjectionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectionError.swift; sourceTree = "<group>"; };
+		E3A1000000000000000006 /* HotwordCorrector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotwordCorrector.swift; sourceTree = "<group>"; };
+		E3A1000000000000000007 /* HotwordCorrectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotwordCorrectorTests.swift; sourceTree = "<group>"; };
+		E3A1000000000000000008 /* TextInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInjector.swift; sourceTree = "<group>"; };
+		E3A1000000000000000009 /* TextInjectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInjectorTests.swift; sourceTree = "<group>"; };
+		E3A10000000000000000A /* PromptProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptProcessor.swift; sourceTree = "<group>"; };
+		E3A10000000000000000B /* TextProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextProcessor.swift; sourceTree = "<group>"; };
+		E3A10000000000000000C /* TextProcessorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextProcessorTests.swift; sourceTree = "<group>"; };
+		E3A10000000000000000D /* SessionCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionCoordinatorTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +137,36 @@
 				073E412B2F3985EB0088A4CF /* SessionCoordinator.swift */,
 			);
 			path = Session;
+			sourceTree = "<group>";
+		};
+		E3C1000000000000000001 /* TextProcessing */ = {
+			isa = PBXGroup;
+			children = (
+				E3A1000000000000000004 /* TextProcessingError.swift */,
+				E3A1000000000000000006 /* HotwordCorrector.swift */,
+				E3A10000000000000000A /* PromptProcessor.swift */,
+				E3A10000000000000000B /* TextProcessor.swift */,
+			);
+			path = TextProcessing;
+			sourceTree = "<group>";
+		};
+		E3C1000000000000000002 /* Injection */ = {
+			isa = PBXGroup;
+			children = (
+				E3A1000000000000000005 /* InjectionError.swift */,
+				E3A1000000000000000008 /* TextInjector.swift */,
+			);
+			path = Injection;
+			sourceTree = "<group>";
+		};
+		E3C1000000000000000003 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E3A1000000000000000001 /* Persona.swift */,
+				E3A1000000000000000002 /* Hotword.swift */,
+				E3A1000000000000000003 /* InputHistory.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		073E41312F3985EB0088A4CF /* STT */ = {
@@ -159,6 +215,7 @@
 				A100000000000000000007 /* Info.plist */,
 				A100000000000000000008 /* Voxa.entitlements */,
 				C100000000000000000003 /* Core */,
+				E3C1000000000000000003 /* Models */,
 				C100000000000000000006 /* UI */,
 				C100000000000000000008 /* Resources */,
 				C100000000000000000009 /* Tests */,
@@ -172,6 +229,8 @@
 				073E412C2F3985EB0088A4CF /* Session */,
 				073E41312F3985EB0088A4CF /* STT */,
 				073E41242F3985D90088A4CF /* Audio */,
+				E3C1000000000000000001 /* TextProcessing */,
+				E3C1000000000000000002 /* Injection */,
 				C100000000000000000004 /* KeyMonitor */,
 				C100000000000000000005 /* Permissions */,
 			);
@@ -225,6 +284,10 @@
 			children = (
 				A100000000000000000009 /* KeyMonitorTests.swift */,
 				A10000000000000000000A /* PermissionManagerTests.swift */,
+				E3A1000000000000000007 /* HotwordCorrectorTests.swift */,
+				E3A1000000000000000009 /* TextInjectorTests.swift */,
+				E3A10000000000000000C /* TextProcessorTests.swift */,
+				E3A10000000000000000D /* SessionCoordinatorTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -351,6 +414,15 @@
 				073E41282F3985D90088A4CF /* AudioLevelProvider.swift in Sources */,
 				073E41292F3985D90088A4CF /* AudioCapturing.swift in Sources */,
 				073E412A2F3985D90088A4CF /* AudioPipeline.swift in Sources */,
+				E3B1000000000000000001 /* Persona.swift in Sources */,
+				E3B1000000000000000002 /* Hotword.swift in Sources */,
+				E3B1000000000000000003 /* InputHistory.swift in Sources */,
+				E3B1000000000000000004 /* TextProcessingError.swift in Sources */,
+				E3B1000000000000000005 /* InjectionError.swift in Sources */,
+				E3B1000000000000000006 /* HotwordCorrector.swift in Sources */,
+				E3B1000000000000000008 /* TextInjector.swift in Sources */,
+				E3B10000000000000000A /* PromptProcessor.swift in Sources */,
+				E3B10000000000000000B /* TextProcessor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,6 +431,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				B100000000000000000009 /* KeyMonitorTests.swift in Sources */,
+				E3B1000000000000000007 /* HotwordCorrectorTests.swift in Sources */,
+				E3B1000000000000000009 /* TextInjectorTests.swift in Sources */,
+				E3B10000000000000000C /* TextProcessorTests.swift in Sources */,
+				E3B10000000000000000D /* SessionCoordinatorTests.swift in Sources */,
 				B10000000000000000000A /* PermissionManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
