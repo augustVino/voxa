@@ -3,6 +3,8 @@ name: Build macOS Application
 on:
   push:
     branches: [main, develop]
+    tags:
+      - 'v*.*.*'
   pull_request:
     branches: [main, develop]
   workflow_dispatch:
@@ -157,3 +159,69 @@ jobs:
         with:
           name: release-notes
           path: release-notes.md
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: Voxa-macOS-${{ github.sha }}
+          path: release-assets
+
+      - name: Extract Version from Tag
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Generate Release Notes
+        run: |
+          cat > release-notes.md <<'EOF'
+          ## Voxa $VERSION
+
+          ### 下载说明
+          - **Voxa-unsigned.zip**: 未签名版本，需要自行签名或关闭 Gatekeeper 才能运行
+          - 如果您配置了代码签名，请下载 **Voxa-signed.zip**
+
+          ### 安装方法
+          1. 下载对应的 zip 文件
+          2. 解压得到 Voxa.app
+          3. 将 Voxa.app 移动到应用程序文件夹
+          4. 首次运行时，可能需要在系统设置中允许应用运行
+
+          ### 变更日志
+          EOF
+
+          # 获取自上一个 tag 以来的提交
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          if [ -n "$PREV_TAG" ]; then
+            echo "### Changes since $PREV_TAG" >> release-notes.md
+            git log ${PREV_TAG}..HEAD --pretty=format:"- %s (%an)" >> release-notes.md
+          else
+            echo "### Initial Release" >> release-notes.md
+            git log --pretty=format:"- %s (%an)" >> release-notes.md
+          fi
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Voxa ${{ env.VERSION }}
+          body_path: release-notes.md
+          draft: false
+          prerelease: false
+          files: release-assets/*.zip
+          fail_on_unmatched_files: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
