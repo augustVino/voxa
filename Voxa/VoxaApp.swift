@@ -194,6 +194,53 @@ final class AppLifecycleCoordinator: AppLifecycleCoordinating {
     }
 }
 
+// MARK: - Builtin Persona
+
+/// 确保内置默认人设存在于数据库中
+/// - Parameter container: SwiftData ModelContainer
+@MainActor
+private func ensureDefaultPersonaExists(container: ModelContainer) {
+    // SwiftData Predicate 无法直接使用静态属性，需要先捕获到局部变量
+    let builtinID = AppSettings.builtinDefaultPersonaID
+    let builtinName = AppSettings.builtinDefaultPersonaName
+    let builtinPrompt = AppSettings.builtinDefaultPersonaPrompt
+
+    let ctx = ModelContext(container)
+    let existing = try? ctx.fetch(
+        FetchDescriptor<Persona>(
+            predicate: #Predicate<Persona> { $0.id == builtinID }
+        )
+    ).first
+
+    if existing == nil {
+        let builtin = Persona(
+            id: builtinID,
+            name: builtinName,
+            prompt: builtinPrompt,
+            descriptionText: "",
+            sortOrder: 0  // 排在最前，自定义人设从 1 开始
+        )
+        ctx.insert(builtin)
+        try? ctx.save()
+    }
+}
+
+/// 设置内置默认人设为当前选中
+@MainActor
+private func setDefaultPersonaAsActive(container: ModelContainer) {
+    let builtinID = AppSettings.builtinDefaultPersonaID
+    let ctx = ModelContext(container)
+    let builtin = try? ctx.fetch(
+        FetchDescriptor<Persona>(
+            predicate: #Predicate<Persona> { $0.id == builtinID }
+        )
+    ).first
+
+    if let builtin = builtin {
+        AppSettings.shared.activePersonaId = builtin.id
+    }
+}
+
 // MARK: - macOS Version Check
 
 /// 检测 macOS 版本是否满足最低要求（macOS 14 Sonoma）
@@ -309,6 +356,14 @@ struct VoxaApp: App {
             guard checkMacOSVersion() else {
                 showVersionAlert()
                 return
+            }
+
+            // 确保内置默认人设存在
+            ensureDefaultPersonaExists(container: containerForStartup)
+
+            // 如果当前无选中人设，默认选中内置人设
+            if AppSettings.shared.activePersonaId.isEmpty {
+                setDefaultPersonaAsActive(container: containerForStartup)
             }
 
             // Phase 5: 在 MainActor 上创建录音浮窗并注入
