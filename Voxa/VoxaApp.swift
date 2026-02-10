@@ -189,7 +189,7 @@ final class AppLifecycleCoordinator: AppLifecycleCoordinating {
         }
     }
 
-    nonisolated deinit {
+    deinit {
         // Tasks 会在 coordinator 释放时自然取消
     }
 }
