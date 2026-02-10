@@ -46,3 +46,6 @@ Package.resolved
 *.dSYM
 *.app
 *.profraw
+openspec
+.claude/commands/
+.claude/skills/
