@@ -48,9 +48,6 @@ final class PromptProcessor: PromptProcessing, Sendable {
             throw TextProcessingError.llmUnavailable("未配置 API Key")
         }
 
-        guard !apiKey.isEmpty else {
-            throw TextProcessingError.llmUnavailable("未配置 API Key")
-        }
         let userContent = "请对以下语音转写文本进行润色处理：\n\n\(text)"
 
         let body = ChatRequest(

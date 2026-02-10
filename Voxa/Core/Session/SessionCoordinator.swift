@@ -169,11 +169,7 @@ final class SessionCoordinator: @unchecked Sendable {
             print("[SessionCoordinator] ❌ 录音启动失败: \(error)")
             state = .error(error.localizedDescription)
             await overlay?.hide(animated: true)
-
-            Task {
-                try? await Task.sleep(for: .seconds(2))
-                await recoverToIdle()
-            }
+            scheduleRecovery()
         }
     }
 
@@ -208,11 +204,7 @@ final class SessionCoordinator: @unchecked Sendable {
             print("[SessionCoordinator] ❌ 停止录音失败: \(error)")
             state = .error(error.localizedDescription)
             await overlay?.hide(animated: true)
-
-            Task {
-                try? await Task.sleep(for: .seconds(2))
-                await recoverToIdle()
-            }
+            scheduleRecovery()
         }
     }
 
@@ -224,10 +216,7 @@ final class SessionCoordinator: @unchecked Sendable {
             print("[SessionCoordinator] ❌ STT 未配置")
             state = .error("请先配置 STT API Key")
             await overlay?.hide(animated: true)
-            Task {
-                try? await Task.sleep(for: .seconds(2))
-                await recoverToIdle()
-            }
+            scheduleRecovery()
             return
         }
 
@@ -261,10 +250,7 @@ final class SessionCoordinator: @unchecked Sendable {
                 print("[SessionCoordinator] ❌ 文本处理失败: \(error)")
                 state = .error("处理失败")
                 await overlay?.hide(animated: true)
-                Task {
-                    try? await Task.sleep(for: .seconds(2))
-                    await recoverToIdle()
-                }
+                scheduleRecovery()
                 return
             }
 
@@ -281,10 +267,7 @@ final class SessionCoordinator: @unchecked Sendable {
             if !injected {
                 state = .error("注入失败")
                 await overlay?.hide(animated: true)
-                Task {
-                    try? await Task.sleep(for: .seconds(2))
-                    await recoverToIdle()
-                }
+                scheduleRecovery()
                 return
             }
 
@@ -312,22 +295,13 @@ final class SessionCoordinator: @unchecked Sendable {
             }
 
             await overlay?.hide(animated: true)
-            // 2 秒后自动恢复到 idle
-            Task {
-                try? await Task.sleep(for: .seconds(2))
-                await recoverToIdle()
-            }
+            scheduleRecovery()
 
         } catch {
             print("[SessionCoordinator] ❌ 未知错误: \(error)")
             state = .error(error.localizedDescription)
             await overlay?.hide(animated: true)
-
-            // 2 秒后自动恢复到 idle
-            Task {
-                try? await Task.sleep(for: .seconds(2))
-                await recoverToIdle()
-            }
+            scheduleRecovery()
         }
     }
 
@@ -336,6 +310,14 @@ final class SessionCoordinator: @unchecked Sendable {
         if case .error = state {
             print("[SessionCoordinator] 🔄 从错误状态恢复到 idle")
             state = .idle
+        }
+    }
+
+    /// 延迟恢复到 idle 状态（错误发生后 2 秒自动恢复）
+    private func scheduleRecovery() {
+        Task {
+            try? await Task.sleep(for: .seconds(2))
+            await recoverToIdle()
         }
     }
 

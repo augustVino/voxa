@@ -37,7 +37,6 @@
 		E3B1000000000000000002 /* Hotword.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000002 /* Hotword.swift */; };
 		E3B1000000000000000003 /* InputHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000003 /* InputHistory.swift */; };
 		E3B1000000000000000004 /* TextProcessingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000004 /* TextProcessingError.swift */; };
-		E3B1000000000000000005 /* InjectionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000005 /* InjectionError.swift */; };
 		E3B1000000000000000006 /* HotwordCorrector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000006 /* HotwordCorrector.swift */; };
 		E3B1000000000000000007 /* HotwordCorrectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000007 /* HotwordCorrectorTests.swift */; };
 		E3B1000000000000000008 /* TextInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000008 /* TextInjector.swift */; };
@@ -101,7 +100,6 @@
 		E3A1000000000000000002 /* Hotword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hotword.swift; sourceTree = "<group>"; };
 		E3A1000000000000000003 /* InputHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputHistory.swift; sourceTree = "<group>"; };
 		E3A1000000000000000004 /* TextProcessingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextProcessingError.swift; sourceTree = "<group>"; };
-		E3A1000000000000000005 /* InjectionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectionError.swift; sourceTree = "<group>"; };
 		E3A1000000000000000006 /* HotwordCorrector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotwordCorrector.swift; sourceTree = "<group>"; };
 		E3A1000000000000000007 /* HotwordCorrectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotwordCorrectorTests.swift; sourceTree = "<group>"; };
 		E3A1000000000000000008 /* TextInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInjector.swift; sourceTree = "<group>"; };
@@ -328,7 +326,6 @@
 		E3C1000000000000000002 /* Injection */ = {
 			isa = PBXGroup;
 			children = (
-				E3A1000000000000000005 /* InjectionError.swift */,
 				E3A1000000000000000008 /* TextInjector.swift */,
 			);
 			path = Injection;
@@ -478,7 +475,6 @@
 				E3B1000000000000000002 /* Hotword.swift in Sources */,
 				E3B1000000000000000003 /* InputHistory.swift in Sources */,
 				E3B1000000000000000004 /* TextProcessingError.swift in Sources */,
-				E3B1000000000000000005 /* InjectionError.swift in Sources */,
 				E3B1000000000000000006 /* HotwordCorrector.swift in Sources */,
 				E3B1000000000000000008 /* TextInjector.swift in Sources */,
 				E3B10000000000000000A /* PromptProcessor.swift in Sources */,

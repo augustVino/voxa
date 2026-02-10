@@ -173,7 +173,7 @@ final class AppLifecycleCoordinator: AppLifecycleCoordinating {
     private func startKeyMonitoring() async {
         do {
             try keyMonitor.startMonitoring()
-            startEventConsumption()
+            // Phase 2: 事件消费由 SessionCoordinator 接管
             appState = .ready
         } catch let error as KeyMonitorError {
             switch error {
@@ -187,13 +187,6 @@ final class AppLifecycleCoordinator: AppLifecycleCoordinating {
         } catch {
             appState = .error(error.localizedDescription)
         }
-    }
-
-    /// 启动事件消费循环
-    /// Phase 2: 事件消费由 SessionCoordinator 接管
-    private func startEventConsumption() {
-        // Phase 2: SessionCoordinator 将在 VoxaApp.init 中启动
-        // 这里保留空实现以保持接口兼容
     }
 
     nonisolated deinit {
