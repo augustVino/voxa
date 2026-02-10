@@ -18,7 +18,7 @@ enum SessionState: Equatable, Sendable {
     /// 识别中
     case transcribing
 
-    /// 处理中（热词/润色）
+    /// 处理中（润色）
     case processing
 
     /// 注入中
@@ -41,8 +41,6 @@ final class SessionCoordinator: @unchecked Sendable {
     private var overlay: (any OverlayPresenting)?
     private let textProcessor: TextProcessor
     private let textInjector: TextInjector
-    /// 在文本处理前刷新热词（由调用方在 MainActor 上执行，可捕获 ModelContainer）
-    private let reloadHotwords: () async -> Void
     /// Phase 4: 会话成功后保存历史记录（rawText, processedText, duration）；内部可做 30 天清理
     private let saveHistory: ((String, String, TimeInterval) async -> Void)?
 
@@ -53,8 +51,6 @@ final class SessionCoordinator: @unchecked Sendable {
 
     /// 事件消费任务
     private var eventTask: Task<Void, Never>?
-    /// Phase 4: 热词刷新通知观察（设置页增删改热词后发送）
-    private var reloadHotwordsObserver: Any?
 
     // MARK: - Initialization
 
@@ -66,7 +62,6 @@ final class SessionCoordinator: @unchecked Sendable {
         overlay: (any OverlayPresenting)? = nil,
         textProcessor: TextProcessor,
         textInjector: TextInjector,
-        reloadHotwords: @escaping () async -> Void,
         saveHistory: ((String, String, TimeInterval) async -> Void)? = nil
     ) {
         self.keyMonitor = keyMonitor
@@ -76,7 +71,6 @@ final class SessionCoordinator: @unchecked Sendable {
         self.overlay = overlay
         self.textProcessor = textProcessor
         self.textInjector = textInjector
-        self.reloadHotwords = reloadHotwords
         self.saveHistory = saveHistory
     }
 
@@ -90,14 +84,6 @@ final class SessionCoordinator: @unchecked Sendable {
         eventTask = Task {
             await consumeKeyEvents()
         }
-        // Phase 4: 设置页热词增删改后刷新
-        reloadHotwordsObserver = NotificationCenter.default.addObserver(
-            forName: .voxaReloadHotwords,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            Task { await self?.reloadHotwords() }
-        }
     }
 
     /// 停止会话协调器
@@ -106,10 +92,6 @@ final class SessionCoordinator: @unchecked Sendable {
 
         eventTask?.cancel()
         eventTask = nil
-        if let o = reloadHotwordsObserver {
-            NotificationCenter.default.removeObserver(o)
-            reloadHotwordsObserver = nil
-        }
 
         // 清理状态
         state = .idle
@@ -239,7 +221,6 @@ final class SessionCoordinator: @unchecked Sendable {
             print("[SessionCoordinator] ✅ 识别完成: \(text)")
             lastTranscribedText = text
 
-            await reloadHotwords()
             state = .processing
             await overlay?.updateStatus("处理中...")
 

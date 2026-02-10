@@ -24,7 +24,7 @@ final class SessionCoordinatorTests: XCTestCase {
 
     @MainActor
     func testSessionCoordinator_createsWithTextProcessorAndInjector() async throws {
-        let schema = Schema([Persona.self, Hotword.self, InputHistory.self])
+        let schema = Schema([Persona.self, InputHistory.self])
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: schema, configurations: [config])
 
@@ -32,7 +32,6 @@ final class SessionCoordinatorTests: XCTestCase {
         let audioPipeline = AudioPipeline()
         let sttProvider = ZhipuSTTProvider(apiKey: "")
         let settings = AppSettings.shared
-        let hotwordCorrector = HotwordCorrector()
         let promptProcessor = PromptProcessor(
             apiKey: "",
             baseURL: "https://open.bigmodel.cn/api/paas/v4/chat/completions",
@@ -40,17 +39,10 @@ final class SessionCoordinatorTests: XCTestCase {
         )
         let getCurrentPrompt: () async -> String? = { nil }
         let textProcessor = TextProcessor(
-            hotwordCorrector: hotwordCorrector,
             promptProcessor: promptProcessor,
             getCurrentPrompt: getCurrentPrompt
         )
         let textInjector = TextInjector()
-        let reloadHotwords: () async -> Void = {
-            await MainActor.run {
-                let ctx = ModelContext(container)
-                hotwordCorrector.reload(from: ctx)
-            }
-        }
 
         let coordinator = SessionCoordinator(
             keyMonitor: keyMonitor,
@@ -59,8 +51,7 @@ final class SessionCoordinatorTests: XCTestCase {
             settings: settings,
             overlay: nil,
             textProcessor: textProcessor,
-            textInjector: textInjector,
-            reloadHotwords: reloadHotwords
+            textInjector: textInjector
         )
 
         XCTAssertEqual(coordinator.state, .idle)

@@ -73,21 +73,6 @@ Copy to clipboard → Simulate Cmd+V → Restore original clipboard
 
 **Implementation**: `TextInjector` automatically falls back when AX API fails.
 
-## Hotword Reloading
-
-Hotwords are cached in memory for performance. Reload triggers:
-
-1. **Settings opened/closed**: `.voxaReloadHotwords` notification posted
-2. **Hotwords modified**: Notification posted after CRUD operations
-3. **Session starts**: Hotwords reloaded at beginning of each session
-
-**Implementation**:
-```swift
-NotificationCenter.default.post(name: .voxaReloadHotwords, object: nil)
-```
-
-**Handler**: `HotwordCorrector` listens for notification and reloads from SwiftData.
-
 ## Keychain Migration
 
 API keys migrated from UserDefaults to Keychain for security:

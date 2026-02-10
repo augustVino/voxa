@@ -2,14 +2,14 @@
 //  GeneralSettingsView.swift
 //  Voxa
 //
-//  Phase 4: 通用设置页 — 快捷键、动画位置、自启动、Dock、自动热词
+//  Phase 4: 通用设置页 — 快捷键、动画位置、自启动、Dock
 //
 
 import SwiftUI
 import AppKit
 import KeyboardShortcuts
 
-/// 通用设置：快捷键、录音动画位置、开机自启动、Dock 图标、自动添加热词
+/// 通用设置：快捷键、录音动画位置、开机自启动、Dock 图标
 struct GeneralSettingsView: View {
     @State private var settings = AppSettings.shared
     @State private var isTogglingLaunchAtLogin = false
@@ -72,12 +72,6 @@ struct GeneralSettingsView: View {
                         // 直接设置 Dock 图标显示策略
                         NSApp.setActivationPolicy(newValue ? .regular : .accessory)
                     }
-                ))
-            }
-            Section("热词") {
-                Toggle("自动添加热词", isOn: Binding(
-                    get: { settings.autoAddHotwords },
-                    set: { settings.autoAddHotwords = $0 }
                 ))
             }
         }

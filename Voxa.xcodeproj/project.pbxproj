@@ -34,11 +34,8 @@
 		B100000000000000000009 /* KeyMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100000000000000000009 /* KeyMonitorTests.swift */; };
 		B10000000000000000000A /* PermissionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000A /* PermissionManagerTests.swift */; };
 		E3B1000000000000000001 /* Persona.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000001 /* Persona.swift */; };
-		E3B1000000000000000002 /* Hotword.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000002 /* Hotword.swift */; };
 		E3B1000000000000000003 /* InputHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000003 /* InputHistory.swift */; };
 		E3B1000000000000000004 /* TextProcessingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000004 /* TextProcessingError.swift */; };
-		E3B1000000000000000006 /* HotwordCorrector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000006 /* HotwordCorrector.swift */; };
-		E3B1000000000000000007 /* HotwordCorrectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000007 /* HotwordCorrectorTests.swift */; };
 		E3B1000000000000000008 /* TextInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000008 /* TextInjector.swift */; };
 		E3B1000000000000000009 /* TextInjectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1000000000000000009 /* TextInjectorTests.swift */; };
 		E3B10000000000000000A /* PromptProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A10000000000000000A /* PromptProcessor.swift */; };
@@ -49,7 +46,6 @@
 		F4B2000000000000000001 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A2000000000000000001 /* GeneralSettingsView.swift */; };
 		F4B3000000000000000001 /* ModelSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A3000000000000000001 /* ModelSettingsView.swift */; };
 		F4B4000000000000000001 /* PersonaSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A4000000000000000001 /* PersonaSettingsView.swift */; };
-		F4B5000000000000000001 /* HotwordSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A5000000000000000001 /* HotwordSettingsView.swift */; };
 		F4B6000000000000000001 /* HistorySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A6000000000000000001 /* HistorySettingsView.swift */; };
 		F4B7000000000000000001 /* LaunchAtLoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A7000000000000000001 /* LaunchAtLoginHelper.swift */; };
 		F4B8000000000000000001 /* InputHistoryCleanup.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A8000000000000000001 /* InputHistoryCleanup.swift */; };
@@ -97,11 +93,8 @@
 		A10000000000000000000B /* Voxa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Voxa.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10000000000000000000C /* VoxaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VoxaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3A1000000000000000001 /* Persona.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persona.swift; sourceTree = "<group>"; };
-		E3A1000000000000000002 /* Hotword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hotword.swift; sourceTree = "<group>"; };
 		E3A1000000000000000003 /* InputHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputHistory.swift; sourceTree = "<group>"; };
 		E3A1000000000000000004 /* TextProcessingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextProcessingError.swift; sourceTree = "<group>"; };
-		E3A1000000000000000006 /* HotwordCorrector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotwordCorrector.swift; sourceTree = "<group>"; };
-		E3A1000000000000000007 /* HotwordCorrectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotwordCorrectorTests.swift; sourceTree = "<group>"; };
 		E3A1000000000000000008 /* TextInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInjector.swift; sourceTree = "<group>"; };
 		E3A1000000000000000009 /* TextInjectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInjectorTests.swift; sourceTree = "<group>"; };
 		E3A10000000000000000A /* PromptProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptProcessor.swift; sourceTree = "<group>"; };
@@ -112,7 +105,6 @@
 		F4A2000000000000000001 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
 		F4A3000000000000000001 /* ModelSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelSettingsView.swift; sourceTree = "<group>"; };
 		F4A4000000000000000001 /* PersonaSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaSettingsView.swift; sourceTree = "<group>"; };
-		F4A5000000000000000001 /* HotwordSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotwordSettingsView.swift; sourceTree = "<group>"; };
 		F4A6000000000000000001 /* HistorySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistorySettingsView.swift; sourceTree = "<group>"; };
 		F4A7000000000000000001 /* LaunchAtLoginHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginHelper.swift; sourceTree = "<group>"; };
 		F4A8000000000000000001 /* InputHistoryCleanup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputHistoryCleanup.swift; sourceTree = "<group>"; };
@@ -295,7 +287,6 @@
 			children = (
 				A100000000000000000009 /* KeyMonitorTests.swift */,
 				A10000000000000000000A /* PermissionManagerTests.swift */,
-				E3A1000000000000000007 /* HotwordCorrectorTests.swift */,
 				E3A1000000000000000009 /* TextInjectorTests.swift */,
 				E3A10000000000000000C /* TextProcessorTests.swift */,
 				E3A10000000000000000D /* SessionCoordinatorTests.swift */,
@@ -316,7 +307,6 @@
 			isa = PBXGroup;
 			children = (
 				E3A1000000000000000004 /* TextProcessingError.swift */,
-				E3A1000000000000000006 /* HotwordCorrector.swift */,
 				E3A10000000000000000A /* PromptProcessor.swift */,
 				E3A10000000000000000B /* TextProcessor.swift */,
 			);
@@ -335,7 +325,6 @@
 			isa = PBXGroup;
 			children = (
 				E3A1000000000000000001 /* Persona.swift */,
-				E3A1000000000000000002 /* Hotword.swift */,
 				E3A1000000000000000003 /* InputHistory.swift */,
 			);
 			path = Models;
@@ -348,7 +337,6 @@
 				F4A2000000000000000001 /* GeneralSettingsView.swift */,
 				F4A3000000000000000001 /* ModelSettingsView.swift */,
 				F4A4000000000000000001 /* PersonaSettingsView.swift */,
-				F4A5000000000000000001 /* HotwordSettingsView.swift */,
 				F4A6000000000000000001 /* HistorySettingsView.swift */,
 			);
 			path = Settings;
@@ -472,10 +460,8 @@
 				073E41292F3985D90088A4CF /* AudioCapturing.swift in Sources */,
 				073E412A2F3985D90088A4CF /* AudioPipeline.swift in Sources */,
 				E3B1000000000000000001 /* Persona.swift in Sources */,
-				E3B1000000000000000002 /* Hotword.swift in Sources */,
 				E3B1000000000000000003 /* InputHistory.swift in Sources */,
 				E3B1000000000000000004 /* TextProcessingError.swift in Sources */,
-				E3B1000000000000000006 /* HotwordCorrector.swift in Sources */,
 				E3B1000000000000000008 /* TextInjector.swift in Sources */,
 				E3B10000000000000000A /* PromptProcessor.swift in Sources */,
 				E3B10000000000000000B /* TextProcessor.swift in Sources */,
@@ -483,7 +469,6 @@
 				F4B2000000000000000001 /* GeneralSettingsView.swift in Sources */,
 				F4B3000000000000000001 /* ModelSettingsView.swift in Sources */,
 				F4B4000000000000000001 /* PersonaSettingsView.swift in Sources */,
-				F4B5000000000000000001 /* HotwordSettingsView.swift in Sources */,
 				F4B6000000000000000001 /* HistorySettingsView.swift in Sources */,
 				F4B7000000000000000001 /* LaunchAtLoginHelper.swift in Sources */,
 				F4B8000000000000000001 /* InputHistoryCleanup.swift in Sources */,
@@ -496,7 +481,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B100000000000000000009 /* KeyMonitorTests.swift in Sources */,
-				E3B1000000000000000007 /* HotwordCorrectorTests.swift in Sources */,
 				E3B1000000000000000009 /* TextInjectorTests.swift in Sources */,
 				E3B10000000000000000C /* TextProcessorTests.swift in Sources */,
 				E3B10000000000000000D /* SessionCoordinatorTests.swift in Sources */,

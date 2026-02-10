@@ -1,6 +1,6 @@
 // MARK: - VoxaApp
 // Phase 1 基础骨架 — App 入口 + 生命周期状态管理
-// Phase 3: ModelContainer 注入 (Persona, Hotword, InputHistory)
+// Phase 3: ModelContainer 注入 (Persona, InputHistory)
 
 import SwiftUI
 import SwiftData
@@ -221,13 +221,13 @@ private func showVersionAlert() {
 struct VoxaApp: App {
     @State private var coordinator: AppLifecycleCoordinator
     @State private var sessionCoordinator: SessionCoordinator
-    /// Phase 3: SwiftData 容器（人设、热词、输入历史）
+    /// Phase 3: SwiftData 容器（人设、输入历史）
     private let modelContainer: ModelContainer
 
     init() {
-        // Phase 3: 创建 ModelContainer，schema 包含 Persona, Hotword, InputHistory
+        // Phase 3: 创建 ModelContainer，schema 包含 Persona, InputHistory
         do {
-            let schema = Schema([Persona.self, Hotword.self, InputHistory.self])
+            let schema = Schema([Persona.self, InputHistory.self])
             let config = ModelConfiguration(isStoredInMemoryOnly: false)
             modelContainer = try ModelContainer(for: schema, configurations: [config])
         } catch {
@@ -243,7 +243,6 @@ struct VoxaApp: App {
 
         // Phase 3: 文本处理与注入依赖
         let settings = AppSettings.shared
-        let hotwordCorrector = HotwordCorrector()
         let promptProcessor = PromptProcessor(
             apiKey: settings.llmApiKey,
             baseURL: settings.llmBaseURL,
@@ -261,17 +260,10 @@ struct VoxaApp: App {
             }
         }
         let textProcessor = TextProcessor(
-            hotwordCorrector: hotwordCorrector,
             promptProcessor: promptProcessor,
             getCurrentPrompt: getCurrentPrompt
         )
         let textInjector = TextInjector()
-        let reloadHotwords: () async -> Void = { [modelContainer, hotwordCorrector] in
-            await MainActor.run {
-                let ctx = ModelContext(modelContainer)
-                hotwordCorrector.reload(from: ctx)
-            }
-        }
 
         // Phase 4: 会话成功后保存历史并执行 30 天清理
         let saveHistory: (String, String, TimeInterval) async -> Void = { [modelContainer] rawText, processedText, duration in
@@ -307,7 +299,6 @@ struct VoxaApp: App {
             overlay: nil,
             textProcessor: textProcessor,
             textInjector: textInjector,
-            reloadHotwords: reloadHotwords,
             saveHistory: saveHistory
         )
         self._sessionCoordinator = State(initialValue: sessionCoord)

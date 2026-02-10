@@ -13,9 +13,8 @@ Tests cover the following core components:
 | PermissionManager | `PermissionManagerTests.swift` | Permission checking logic |
 | KeyMonitor | `KeyMonitorTests.swift` | Fn key detection |
 | SessionCoordinator | `SessionCoordinatorTests.swift` | State machine transitions |
-| HotwordCorrector | `HotwordCorrectorTests.swift` | Pattern replacement |
 | TextInjector | `TextInjectorTests.swift` | AX API and clipboard fallback |
-| TextProcessor | `TextProcessorTests.swift` | Two-stage processing pipeline |
+| TextProcessor | `TextProcessorTests.swift` | LLM polishing pipeline |
 
 ## Running Tests
 

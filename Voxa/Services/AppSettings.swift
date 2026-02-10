@@ -99,11 +99,6 @@ final class AppSettings {
     @AppStorage("showDockIcon")
     var showDockIcon: Bool = false
 
-    /// 自动添加热词（识别后自动加入热词表）
-    @ObservationIgnored
-    @AppStorage("autoAddHotwords")
-    var autoAddHotwords: Bool = false
-
     // MARK: - 浮窗配置
 
     /// 浮窗位置
