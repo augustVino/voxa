@@ -12,62 +12,59 @@ import SwiftData
 struct PersonaSettingsView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Persona.sortOrder) private var personas: [Persona]
-    @State private var settings = AppSettings.shared
+    @AppStorage("activePersonaId") private var activePersonaId: String = ""
     @State private var showingAdd = false
     @State private var editingPersona: Persona?
 
     var body: some View {
-        VStack(spacing: 0) {
-            HStack {
-                Spacer()
-                Button("添加人设") { showingAdd = true }
-                    .buttonStyle(.borderedProminent)
-                    .padding(.horizontal)
-                    .padding(.vertical, 8)
+        Form {
+            // 操作栏 Section
+            Section {
+                HStack {
+                    Spacer()
+                    Button("添加人设", systemImage: "plus") { showingAdd = true }
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.small)
+                }
             }
-            .background(.regularMaterial)
-            personaList
-                .overlay { personaEmptyOverlay }
+
+            // 人设列表 Section
+            Section {
+                ForEach(personas) { p in
+                    PersonaRow(
+                        persona: p,
+                        isActive: activePersonaId == p.id,
+                        onSelect: { setActivePersona(p) },
+                        onEdit: { editingPersona = p },
+                        onDelete: { deletePersona(p) }
+                    )
+                }
+            }
         }
+        .formStyle(.grouped)
+        .padding()
         .sheet(isPresented: $showingAdd) {
-                PersonaEditSheet(modelContext: modelContext, persona: nil) { showingAdd = false }
-            }
-            .sheet(item: $editingPersona) { p in
-                PersonaEditSheet(modelContext: modelContext, persona: p) { editingPersona = nil }
-            }
-    }
-
-    private var personaList: some View {
-        List {
-            ForEach(personas) { p in
-                PersonaRow(
-                    persona: p,
-                    isActive: settings.activePersonaId == p.id,
-                    onSelect: { setActivePersona(p) },
-                    onEdit: { editingPersona = p },
-                    onDelete: { deletePersona(p) }
-                )
-            }
+            PersonaEditSheet(modelContext: modelContext, persona: nil) { showingAdd = false }
         }
-    }
-
-    @ViewBuilder
-    private var personaEmptyOverlay: some View {
-        if personas.isEmpty {
-            ContentUnavailableView("暂无人设", systemImage: "person.crop.circle.badge.plus", description: Text("点击上方「添加人设」创建"))
+        .sheet(item: $editingPersona) { p in
+            PersonaEditSheet(modelContext: modelContext, persona: p) { editingPersona = nil }
         }
     }
 
     private func setActivePersona(_ p: Persona) {
-        settings.activePersonaId = p.id
+        activePersonaId = p.id
     }
 
     private func deletePersona(_ p: Persona) {
-        if settings.activePersonaId == p.id {
-            settings.activePersonaId = ""
-        }
+        let wasActive = activePersonaId == p.id
         modelContext.delete(p)
         try? modelContext.save()
+
+        // 如果删除的是当前激活的人设，自动选中内置人设
+        // 内置人设始终存在（不可删除），所以无需检查
+        if wasActive {
+            activePersonaId = AppSettings.builtinDefaultPersonaID
+        }
     }
 }
 
@@ -79,33 +76,99 @@ private struct PersonaRow: View {
     let onEdit: () -> Void
     let onDelete: () -> Void
 
-    /// 是否为内置人设
-    private var isBuiltin: Bool {
-        persona.id == AppSettings.builtinDefaultPersonaID
-    }
+    @State private var isExpanded = false
 
     var body: some View {
-        HStack {
-            Image(systemName: isActive ? "checkmark.circle.fill" : "circle")
-                .foregroundStyle(isActive ? Color.accentColor : Color.secondary)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(persona.name)
-                    .font(.headline)
-                if !persona.descriptionText.isEmpty {
-                    Text(persona.descriptionText)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
+        VStack(alignment: .leading, spacing: 8) {
+            // 主行 - 使用 Button 包装以实现可靠的点击
+            Button {
+                onSelect()
+            } label: {
+                HStack {
+                    Image(systemName: isActive ? "checkmark.circle.fill" : "circle")
+                        .foregroundStyle(isActive ? Color.accentColor : Color.secondary)
+                    VStack(alignment: .leading, spacing: 2) {
+                        HStack(spacing: 6) {
+                            Text(persona.name)
+                                .font(.headline)
+                                .foregroundStyle(.primary)
+                            if persona.id == AppSettings.builtinDefaultPersonaID {
+                                Text("内置")
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                                    .padding(.horizontal, 6)
+                                    .padding(.vertical, 2)
+                                    .background(Color.secondary.opacity(0.15))
+                                    .clipShape(Capsule())
+                            }
+                        }
+                        if !persona.descriptionText.isEmpty {
+                            Text(persona.descriptionText)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .lineLimit(1)
+                        }
+                    }
+                    Spacer()
+                    // 操作按钮
+                    HStack(spacing: 8) {
+                        if persona.id == AppSettings.builtinDefaultPersonaID {
+                            Button(isExpanded ? "收起" : "查看") {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                    isExpanded.toggle()
+                                }
+                            }
+                            .controlSize(.small)
+                            .buttonStyle(.bordered)
+                            .accessibilityLabel(isExpanded ? "收起提示词" : "查看提示词")
+                        } else {
+                            Button("编辑", action: onEdit)
+                                .controlSize(.small)
+                                .buttonStyle(.bordered)
+                                .accessibilityLabel("编辑人设")
+                            Button("删除", role: .destructive, action: onDelete)
+                                .controlSize(.small)
+                                .buttonStyle(.bordered)
+                                .accessibilityLabel("删除人设")
+                        }
+                    }
                 }
             }
-            Spacer()
-            Button("编辑", action: onEdit)
-                .disabled(isBuiltin)
-            Button("删除", role: .destructive, action: onDelete)
-                .disabled(isBuiltin)
+            .buttonStyle(.plain)
+            .accessibilityLabel(persona.name)
+            .accessibilityHint(persona.id == AppSettings.builtinDefaultPersonaID ? "内置人设" : "自定义人设")
+            .accessibilityAddTraits(isActive ? [.isSelected] : [])
+
+            // 展开的提示词内容（仅内置人设）
+            if persona.id == AppSettings.builtinDefaultPersonaID && isExpanded {
+                VStack(alignment: .leading, spacing: 6) {
+                    Divider()
+                    Text("提示词")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Text(persona.prompt)
+                        .font(.body)
+                        .padding(10)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(Color.secondary.opacity(0.1))
+                        .clipShape(RoundedRectangle(cornerRadius: 6))
+                        .accessibilityLabel("提示词内容")
+                    HStack {
+                        Spacer()
+                        Button("复制") {
+                            NSPasteboard.general.clearContents()
+                            NSPasteboard.general.setString(persona.prompt, forType: .string)
+                        }
+                        .controlSize(.small)
+                        .buttonStyle(.bordered)
+                        .accessibilityLabel("复制提示词")
+                    }
+                }
+                .transition(.opacity.combined(with: .move(edge: .top)))
+                .accessibilityElement(children: .contain)
+                .accessibilityLabel("提示词详情")
+            }
         }
-        .contentShape(Rectangle())
-        .onTapGesture(perform: onSelect)
     }
 }
 
