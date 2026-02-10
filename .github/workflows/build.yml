@@ -48,6 +48,7 @@ jobs:
           name: Voxa-macOS-${{ github.sha }}
           path: artifacts/Voxa.zip
           retention-days: 30
+          if-no-files-found: error
 
       - name: Generate Release Notes
         if: github.event_name == 'push'
@@ -87,7 +88,16 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: Voxa-macOS-${{ github.sha }}
-          path: .
+          path: artifacts
+
+      - name: Verify Download
+        run: |
+          echo "Downloaded files:"
+          ls -la artifacts/
+          echo "---"
+          echo "Copying Voxa.zip to root directory..."
+          cp artifacts/Voxa.zip Voxa.zip
+          ls -la Voxa.zip
 
       - name: Extract Version
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
