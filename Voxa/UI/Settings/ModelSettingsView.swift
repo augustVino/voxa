@@ -47,7 +47,7 @@ struct ModelSettingsView: View {
                 SecureField("API Key", text: $llmApiKey)
                     .focused($focusedField, equals: .llmApiKey)
                     .onSubmit { saveField(.llmApiKey) }
-                TextField("endpoint", text: $llmBaseURL, prompt: Text("https://api.example.com/v1/chat/completions"))
+                TextField("Base URL", text: $llmBaseURL, prompt: Text("https://api.openai.com/v1"))
                     .focused($focusedField, equals: .llmBaseURL)
                     .onSubmit { saveField(.llmBaseURL) }
                 TextField("模型名称", text: $llmModel)

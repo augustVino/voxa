@@ -42,10 +42,26 @@ final class PromptProcessor: PromptProcessing, Sendable {
         self.model = model
     }
 
+    /// 规范化 baseUrl：trim 空格，移除尾部斜杠
+    private func normalizeBaseURL(_ url: String) -> String {
+        var result = url.trimmingCharacters(in: .whitespacesAndNewlines)
+        result = result.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        return result
+    }
+
+    /// 构建完整的 chat/completions URL
+    private var chatCompletionsURL: String {
+        "\(normalizeBaseURL(baseURL))/chat/completions"
+    }
+
     /// 使用 systemPrompt（人设 prompt）对文本进行润色；超时 30s，空或异常视为失败
     func process(text: String, systemPrompt: String) async throws -> String {
         guard !apiKey.isEmpty else {
             throw TextProcessingError.llmUnavailable("未配置 API Key")
+        }
+
+        guard !baseURL.isEmpty else {
+            throw TextProcessingError.llmUnavailable("未配置 Base URL")
         }
 
         let userContent = "请对以下语音转写文本进行润色处理：\n\n\(text)"
@@ -58,8 +74,8 @@ final class PromptProcessor: PromptProcessing, Sendable {
             ]
         )
 
-        guard let url = URL(string: baseURL) else {
-            throw TextProcessingError.llmUnavailable("无效的 Base URL")
+        guard let url = URL(string: chatCompletionsURL) else {
+            throw TextProcessingError.llmUnavailable("无效的 API 端点 URL")
         }
 
         var request = URLRequest(url: url)

@@ -73,10 +73,10 @@ final class AppSettings {
         }
     }
 
-    /// LLM Base URL（智谱 GLM-4 对话）
+    /// LLM Base URL（OpenAI 协议兼容，系统自动拼接 /chat/completions）
     @ObservationIgnored
     @AppStorage("llmBaseURL")
-    var llmBaseURL: String = "https://open.bigmodel.cn/api/paas/v4/chat/completions"
+    var llmBaseURL: String = "https://api.openai.com/v1"
 
     /// LLM 模型名称
     @ObservationIgnored
