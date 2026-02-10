@@ -79,6 +79,11 @@ private struct PersonaRow: View {
     let onEdit: () -> Void
     let onDelete: () -> Void
 
+    /// 是否为内置人设
+    private var isBuiltin: Bool {
+        persona.id == AppSettings.builtinDefaultPersonaID
+    }
+
     var body: some View {
         HStack {
             Image(systemName: isActive ? "checkmark.circle.fill" : "circle")
@@ -95,7 +100,9 @@ private struct PersonaRow: View {
             }
             Spacer()
             Button("编辑", action: onEdit)
+                .disabled(isBuiltin)
             Button("删除", role: .destructive, action: onDelete)
+                .disabled(isBuiltin)
         }
         .contentShape(Rectangle())
         .onTapGesture(perform: onSelect)

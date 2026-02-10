@@ -13,6 +13,17 @@ import SwiftUI
 @Observable
 @MainActor
 final class AppSettings {
+
+    // MARK: - 常量
+
+    /// 内置默认人设的固定 ID
+    static let builtinDefaultPersonaID = "builtin-default"
+
+    /// 内置默认人设的名称
+    static let builtinDefaultPersonaName = "默认风格"
+
+    /// 内置默认人设的 Prompt
+    static let builtinDefaultPersonaPrompt = "让文本保持自然、清晰、口语化的语气，同时更精炼易读，要把句尾的句号去掉。"
     // MARK: - STT 配置
 
     /// STT API Key (智谱 API)，存 Keychain
