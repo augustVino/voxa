@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voxa 录音浮窗设计 - 简约胶囊</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        min-height: 100vh;
+        padding: 40px 20px;
+        color: #fff;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+
+      .subtitle {
+        text-align: center;
+        opacity: 0.6;
+        margin-bottom: 40px;
+      }
+
+      .layouts {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+        margin-bottom: 40px;
+      }
+
+      .style-card {
+        border-radius: 16px;
+        padding: 24px;
+        backdrop-filter: blur(10px);
+      }
+
+      .style-card h3 {
+        margin-bottom: 16px;
+        font-size: 14px;
+        opacity: 0.7;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      /* 暗色主题区域 */
+      .dark-section {
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .dark-section .style-card {
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      /* 亮色主题区域 */
+      .light-section {
+        background: rgba(0, 0, 0, 0.03);
+        color: #1d1d1f;
+      }
+
+      .light-section .style-card {
+        background: rgba(0, 0, 0, 0.02);
+      }
+
+      .light-section .subtitle,
+      .light-section h3 {
+        color: #1d1d1f;
+      }
+
+      /* 模拟桌面背景 - 暗色 */
+      .desktop-dark {
+        background: linear-gradient(180deg, #2d2d3a 0%, #1e1e28 100%);
+        border-radius: 12px;
+        padding: 60px 40px 40px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .desktop-dark::before {
+        content: 'Dark Mode';
+        position: absolute;
+        top: 8px;
+        left: 12px;
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.3);
+      }
+
+      /* 模拟桌面背景 - 亮色 */
+      .desktop-light {
+        background: linear-gradient(180deg, #f5f5f7 0%, #e8e8ed 100%);
+        border-radius: 12px;
+        padding: 60px 40px 40px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .desktop-light::before {
+        content: 'Light Mode';
+        position: absolute;
+        top: 8px;
+        left: 12px;
+        font-size: 10px;
+        color: rgba(0, 0, 0, 0.3);
+      }
+
+      /* ===== 暗色主题样式 ===== */
+      .overlay-dark-mode {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 18px;
+        background: rgba(0, 0, 0, 0.75);
+        border-radius: 100px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      .overlay-dark-mode .recording-dot {
+        width: 8px;
+        height: 8px;
+        background: #ff3b30;
+        border-radius: 50%;
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.5;
+          transform: scale(1.2);
+        }
+      }
+
+      .overlay-dark-mode .waveform {
+        display: flex;
+        gap: 2px;
+        height: 20px;
+        align-items: center;
+      }
+
+      .overlay-dark-mode .waveform .bar {
+        width: 3px;
+        background: #fff;
+        border-radius: 2px;
+        transition: height 0.05s ease-out;
+      }
+
+      .overlay-dark-mode .status {
+        font-size: 13px;
+        color: #fff;
+        font-weight: 500;
+      }
+
+      /* ===== 亮色主题样式 ===== */
+      .overlay-light-mode {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 18px;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 100px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15), 0 0 0 0.5px rgba(0, 0, 0, 0.05);
+      }
+
+      .overlay-light-mode .recording-dot {
+        width: 8px;
+        height: 8px;
+        background: #ff3b30;
+        border-radius: 50%;
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+
+      .overlay-light-mode .waveform {
+        display: flex;
+        gap: 2px;
+        height: 20px;
+        align-items: center;
+      }
+
+      .overlay-light-mode .waveform .bar {
+        width: 3px;
+        background: #1d1d1f;
+        border-radius: 2px;
+        transition: height 0.05s ease-out;
+      }
+
+      .overlay-light-mode .status {
+        font-size: 13px;
+        color: #1d1d1f;
+        font-weight: 500;
+      }
+
+      /* 尺寸对比展示 */
+      .size-comparison {
+        margin-top: 40px;
+        padding: 24px;
+        background: rgba(128, 128, 128, 0.1);
+        border-radius: 16px;
+      }
+
+      .size-comparison h3 {
+        margin-bottom: 20px;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        opacity: 0.7;
+      }
+
+      .comparison-grid {
+        display: flex;
+        gap: 40px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .comparison-item {
+        text-align: center;
+      }
+
+      .comparison-item .label {
+        font-size: 11px;
+        opacity: 0.5;
+        margin-top: 12px;
+      }
+
+      /* 亮色对比区 */
+      .light-comparison {
+        background: rgba(0, 0, 0, 0.02);
+        color: #1d1d1f;
+      }
+
+      .light-comparison h3 {
+        color: #1d1d1f;
+      }
+
+      /* 动画效果展示 */
+      .animation-demo {
+        margin-top: 40px;
+        padding: 24px;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        border-radius: 16px;
+      }
+
+      .animation-demo h3 {
+        margin-bottom: 20px;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        opacity: 0.7;
+      }
+
+      .demo-row {
+        display: flex;
+        gap: 40px;
+        justify-content: center;
+        flex-wrap: wrap;
+        align-items: flex-start;
+      }
+
+      .demo-item {
+        text-align: center;
+      }
+
+      .demo-item .label {
+        font-size: 11px;
+        opacity: 0.5;
+        margin-top: 12px;
+      }
+
+      /* Swift 代码预览 */
+      .code-preview {
+        margin-top: 40px;
+        padding: 24px;
+        background: #1e1e1e;
+        border-radius: 16px;
+      }
+
+      .code-preview h3 {
+        margin-bottom: 16px;
+        font-size: 14px;
+        color: #fff;
+        opacity: 0.7;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .code-preview pre {
+        font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+        font-size: 12px;
+        line-height: 1.6;
+        color: #e0e0e0;
+        overflow-x: auto;
+        white-space: pre-wrap;
+      }
+
+      .code-preview .keyword {
+        color: #ff79c6;
+      }
+      .code-preview .string {
+        color: #50fa7b;
+      }
+      .code-preview .comment {
+        color: #6272a4;
+      }
+      .code-preview .type {
+        color: #8be9fd;
+      }
+      .code-preview .number {
+        color: #bd93f9;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Voxa 录音浮窗</h1>
+      <p class="subtitle">简约胶囊样式 - 自适应亮暗主题</p>
+
+      <!-- 暗色主题 -->
+      <div class="dark-section">
+        <div class="layouts" style="grid-template-columns: 1fr">
+          <div class="style-card">
+            <h3>暗色主题 (Dark Mode)</h3>
+            <div class="desktop-dark">
+              <div class="overlay-dark-mode" id="style-dark">
+                <div class="recording-dot"></div>
+                <div class="waveform"></div>
+                <div class="status">聆听中...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 亮色主题 -->
+      <div class="light-section">
+        <div class="layouts" style="grid-template-columns: 1fr">
+          <div class="style-card">
+            <h3>亮色主题 (Light Mode)</h3>
+            <div class="desktop-light">
+              <div class="overlay-light-mode" id="style-light">
+                <div class="recording-dot"></div>
+                <div class="waveform"></div>
+                <div class="status">聆听中...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 对比展示 -->
+      <div class="animation-demo">
+        <h3>并排对比</h3>
+        <div class="demo-row">
+          <div class="demo-item">
+            <div class="overlay-dark-mode">
+              <div class="recording-dot"></div>
+              <div class="waveform"></div>
+              <div class="status">聆听中...</div>
+            </div>
+            <div class="label">Dark Mode</div>
+          </div>
+          <div class="demo-item">
+            <div class="overlay-light-mode">
+              <div class="recording-dot"></div>
+              <div class="waveform"></div>
+              <div class="status">聆听中...</div>
+            </div>
+            <div class="label">Light Mode</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 尺寸标注 -->
+      <div class="size-comparison">
+        <h3>设计规格</h3>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            font-size: 13px;
+            opacity: 0.8;
+          "
+        >
+          <div><strong>整体高度:</strong> 36px (padding 10px)</div>
+          <div><strong>整体宽度:</strong> 自适应内容</div>
+          <div><strong>圆角:</strong> 100px (胶囊形)</div>
+          <div><strong>内边距:</strong> 10px 18px</div>
+          <div><strong>波形条宽度:</strong> 3px</div>
+          <div><strong>波形条间距:</strong> 2px</div>
+          <div><strong>波形条高度:</strong> 4px ~ 20px</div>
+          <div><strong>录音点直径:</strong> 8px (#ff3b30)</div>
+          <div><strong>文字大小:</strong> 13px Medium</div>
+          <div><strong>元素间距:</strong> 10px</div>
+        </div>
+      </div>
+
+      <!-- Swift 代码预览 -->
+      <div class="code-preview">
+        <h3>SwiftUI 实现代码</h3>
+        <pre><code><span class="keyword">struct</span> <span class="type">RecordingOverlayView</span>: <span class="type">View</span> {
+    <span class="keyword">@Bindable</span> <span class="keyword">var</span> state: <span class="type">OverlayState</span>
+    <span class="keyword">@Environment</span>(\.colorScheme) <span class="keyword">var</span> colorScheme
+
+    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">View</span> {
+        <span class="type">HStack</span>(spacing: <span class="number">10</span>) {
+            <span class="comment">// 录音红点</span>
+            <span class="type">Circle</span>()
+                .fill(.red)
+                .frame(width: <span class="number">8</span>, height: <span class="number">8</span>)
+
+            <span class="comment">// 波形</span>
+            <span class="type">WaveformView</span>(levels: state.levels)
+
+            <span class="comment">// 状态文字</span>
+            <span class="type">Text</span>(state.statusText)
+                .font(.system(size: <span class="number">13</span>, weight: .medium))
+        }
+        .padding(.horizontal, <span class="number">18</span>)
+        .padding(.vertical, <span class="number">10</span>)
+        .background(backgroundView)
+        .clipShape(.capsule)
+    }
+
+    <span class="keyword">@ViewBuilder</span>
+    <span class="keyword">private</span> <span class="keyword">var</span> backgroundView: <span class="keyword">some</span> <span class="type">View</span> {
+        <span class="keyword">if</span> colorScheme == .dark {
+            <span class="type">Color</span>.black.opacity(<span class="number">0.75</span>)
+        } <span class="keyword">else</span> {
+            <span class="type">Color</span>.white.opacity(<span class="number">0.95</span>)
+        }
+    }
+}</code></pre>
+      </div>
+    </div>
+
+    <script>
+      const barCount = 12;
+
+      // 初始化波形条
+      function initWaveforms() {
+        document.querySelectorAll('.waveform').forEach((waveform) => {
+          waveform.innerHTML = '';
+          for (let i = 0; i < barCount; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'bar';
+            bar.style.height = '4px';
+            waveform.appendChild(bar);
+          }
+        });
+      }
+
+      // 波形动画
+      function animateWaveform() {
+        document.querySelectorAll('.waveform').forEach((waveform) => {
+          const bars = waveform.querySelectorAll('.bar');
+          bars.forEach((bar) => {
+            const height = 4 + Math.random() * 16;
+            bar.style.height = `${height}px`;
+          });
+        });
+      }
+
+      // 初始化
+      initWaveforms();
+      setInterval(animateWaveform, 100);
+    </script>
+  </body>
+</html>

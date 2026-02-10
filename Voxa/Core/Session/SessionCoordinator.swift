@@ -186,8 +186,8 @@ final class SessionCoordinator: @unchecked Sendable {
 
         print("[SessionCoordinator] 🛑 Fn 键释放,停止录音")
 
-        // 先更新浮窗状态为「识别中」
-        await overlay?.updateStatus("识别中...")
+        // 先更新浮窗状态为「聆听中」
+        await overlay?.updateStatus("聆听中...")
 
         do {
             // 停止录音并获取音频数据 (会结束音量流)

@@ -12,14 +12,14 @@ import SwiftUI
 /// 使用 NSPanel + .nonactivatingPanel 确保不抢夺当前应用焦点
 @MainActor
 final class OverlayPanel: NSPanel, @unchecked Sendable {
-    
+
     // MARK: - UI
-    
+
     private let overlayState = OverlayState()
     private var levelStreamTask: Task<Void, Never>?
-    
+
     // MARK: - Init
-    
+
     override init(
         contentRect: NSRect,
         styleMask style: NSWindow.StyleMask,
@@ -33,10 +33,10 @@ final class OverlayPanel: NSPanel, @unchecked Sendable {
             defer: flag
         )
     }
-    
+
     convenience init() {
         self.init(
-            contentRect: NSRect(x: 0, y: 0, width: 280, height: 100),
+            contentRect: NSRect(x: 0, y: 0, width: 200, height: 40),
             styleMask: [.borderless, .nonactivatingPanel],
             backing: .buffered,
             defer: false
@@ -44,16 +44,16 @@ final class OverlayPanel: NSPanel, @unchecked Sendable {
         level = .floating
         isOpaque = false
         backgroundColor = .clear
-        hasShadow = true
+        hasShadow = false  // 自定义阴影在 SwiftUI 中处理
         collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
         isMovableByWindowBackground = false
-        
+
         let hostingView = NSHostingView(rootView: RecordingOverlayView(state: overlayState))
         contentView = hostingView
     }
-    
+
     // MARK: - Position
-    
+
     /// 根据位置枚举计算浮窗原点 (多显示器: 使用主屏)
     private func frameOrigin(for position: OverlayPosition) -> NSPoint {
         let screen = NSScreen.main ?? NSScreen.screens.first
@@ -62,7 +62,7 @@ final class OverlayPanel: NSPanel, @unchecked Sendable {
         }
         let visible = screen.visibleFrame
         let margin: CGFloat = 24
-        
+
         switch position {
         case .bottomLeft:
             return NSPoint(x: visible.minX + margin, y: visible.minY + margin)
@@ -83,18 +83,18 @@ final class OverlayPanel: NSPanel, @unchecked Sendable {
 // MARK: - OverlayPresenting
 
 extension OverlayPanel: OverlayPresenting {
-    
+
     func show(at position: OverlayPosition, animated: Bool) async {
         await MainActor.run {
-            overlayState.statusText = "正在聆听..."
+            overlayState.statusText = "聆听中..."
             overlayState.levels = Array(repeating: 0, count: OverlayState.barCountForOverlay)
             overlayState.partialResult = ""
-            
+
             setFrameOrigin(frameOrigin(for: position))
             orderFrontRegardless()
         }
     }
-    
+
     func hide(animated: Bool) async {
         await MainActor.run {
             levelStreamTask?.cancel()
@@ -102,19 +102,19 @@ extension OverlayPanel: OverlayPresenting {
             orderOut(nil)
         }
     }
-    
+
     func updateStatus(_ text: String) async {
         await MainActor.run {
             overlayState.statusText = text
         }
     }
-    
+
     func updatePartialResult(_ partialText: String) async {
         await MainActor.run {
             overlayState.partialResult = partialText
         }
     }
-    
+
     func setLevelStream(_ stream: AsyncStream<Float>) async {
         await MainActor.run {
             levelStreamTask?.cancel()
