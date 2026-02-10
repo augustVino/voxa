@@ -36,7 +36,7 @@ struct ModelSettingsView: View {
                 SecureField("API Key", text: $sttApiKey)
                     .focused($focusedField, equals: .sttApiKey)
                     .onSubmit { saveField(.sttApiKey) }
-                TextField("Base URL", text: $sttBaseURL)
+                TextField("endpoint", text: $sttBaseURL, prompt: Text("https://api.example.com/v1/audio/transcriptions"))
                     .focused($focusedField, equals: .sttBaseURL)
                     .onSubmit { saveField(.sttBaseURL) }
                 TextField("模型名称", text: $sttModel)
@@ -47,7 +47,7 @@ struct ModelSettingsView: View {
                 SecureField("API Key", text: $llmApiKey)
                     .focused($focusedField, equals: .llmApiKey)
                     .onSubmit { saveField(.llmApiKey) }
-                TextField("Base URL", text: $llmBaseURL)
+                TextField("endpoint", text: $llmBaseURL, prompt: Text("https://api.example.com/v1/chat/completions"))
                     .focused($focusedField, equals: .llmBaseURL)
                     .onSubmit { saveField(.llmBaseURL) }
                 TextField("模型名称", text: $llmModel)
