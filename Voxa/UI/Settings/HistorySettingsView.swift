@@ -19,21 +19,26 @@ struct HistorySettingsView: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            HStack {
-                Image(systemName: "magnifyingglass")
-                    .foregroundStyle(.secondary)
-                TextField("搜索历史记录", text: $searchText)
-                    .textFieldStyle(.plain)
+        Form {
+            Section {
+                HStack(spacing: 6) {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundStyle(.secondary)
+                    TextField("搜索历史记录", text: $searchText)
+                        .textFieldStyle(.plain)
+                }
             }
-            .padding(8)
-            .background(.regularMaterial)
-            HistoryListView(
-                modelContext: modelContext,
-                cutoffDate: cutoffDate,
-                searchText: searchText
-            )
+
+            Section {
+                HistoryListContent(
+                    modelContext: modelContext,
+                    cutoffDate: cutoffDate,
+                    searchText: searchText
+                )
+            }
         }
+        .formStyle(.grouped)
+        .padding()
         .safeAreaInset(edge: .bottom) {
             Text("仅保留最近 \(historyRetentionDays) 天")
                 .font(.caption)
@@ -42,30 +47,7 @@ struct HistorySettingsView: View {
     }
 }
 
-/// 仅查询 30 天内、按 createdAt 倒序的列表（支持搜索过滤）
-struct HistoryListView: View {
-    let modelContext: ModelContext
-    let cutoffDate: Date
-    let searchText: String
-
-    private var descriptor: FetchDescriptor<InputHistory> {
-        var d = FetchDescriptor<InputHistory>(
-            predicate: #Predicate<InputHistory> { $0.createdAt >= cutoffDate }
-        )
-        d.sortBy = [SortDescriptor<InputHistory>(\.createdAt, order: .reverse)]
-        return d
-    }
-
-    var body: some View {
-        // 使用 @Query 需要静态 predicate，这里用 FetchDescriptor 在 onAppear 里 fetch；为简化先用简单 @Query + 动态 predicate 若 SwiftData 支持，否则用 ViewModel 注入数据
-        HistoryListContent(
-            modelContext: modelContext,
-            cutoffDate: cutoffDate,
-            searchText: searchText
-        )
-    }
-}
-
+/// 历史记录列表内容：支持搜索过滤、多选、批量操作
 struct HistoryListContent: View {
     let modelContext: ModelContext
     let cutoffDate: Date
@@ -75,6 +57,7 @@ struct HistoryListContent: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            // 批量操作栏
             if !selectedIds.isEmpty {
                 HStack {
                     Text("已选 \(selectedIds.count) 条")
@@ -85,18 +68,20 @@ struct HistoryListContent: View {
                         deleteSelected()
                     }
                     .buttonStyle(.bordered)
-                    .padding(.horizontal)
-                    .padding(.vertical, 6)
+                    .controlSize(.small)
                 }
-                .padding(.horizontal)
-                .background(.regularMaterial)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(.ultraThinMaterial)
             }
+
             List(selection: $selectedIds) {
                 ForEach(filteredItems) { item in
                     HistoryRow(item: item, onCopy: { copyItem(item) }, onDelete: { deleteItem(item) })
                         .tag(item.id)
                 }
             }
+            .listStyle(.plain)
             .onAppear { loadItems() }
             .onChange(of: searchText) { _, _ in loadItems() }
             .overlay {
@@ -174,7 +159,9 @@ struct HistoryRow: View {
                     .foregroundStyle(.secondary)
                 Spacer()
                 Button("复制", action: onCopy)
+                    .controlSize(.small)
                 Button("删除", role: .destructive, action: onDelete)
+                    .controlSize(.small)
             }
         }
         .padding(.vertical, 4)
