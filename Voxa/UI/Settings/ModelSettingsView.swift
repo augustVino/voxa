@@ -54,6 +54,15 @@ struct ModelSettingsView: View {
                     .focused($focusedField, equals: .llmModel)
                     .onSubmit { saveField(.llmModel) }
             }
+
+            Section {
+                Button(action: { saveAll() }) {
+                    Text("保存配置")
+                        .frame(maxWidth: .infinity)
+                        .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
+                }
+                .buttonStyle(.borderedProminent)
+            }
         }
         .formStyle(.grouped)
         .padding()
@@ -84,6 +93,17 @@ struct ModelSettingsView: View {
         case .llmModel:
             settings.llmModel = llmModel
         }
+        focusedField = nil
+    }
+
+    /// 保存所有字段到 settings
+    private func saveAll() {
+        settings.sttApiKey = sttApiKey
+        settings.sttBaseURL = sttBaseURL
+        settings.sttModel = sttModel
+        settings.llmApiKey = llmApiKey
+        settings.llmBaseURL = llmBaseURL
+        settings.llmModel = llmModel
         focusedField = nil
     }
 }

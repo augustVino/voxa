@@ -290,11 +290,6 @@ struct VoxaApp: App {
 
         // Phase 3: 文本处理与注入依赖
         let settings = AppSettings.shared
-        let promptProcessor = PromptProcessor(
-            apiKey: settings.llmApiKey,
-            baseURL: settings.llmBaseURL,
-            model: settings.llmModel
-        )
         let getCurrentPrompt: () async -> String? = { [modelContainer] in
             await MainActor.run {
                 let id = AppSettings.shared.activePersonaId
@@ -307,7 +302,7 @@ struct VoxaApp: App {
             }
         }
         let textProcessor = TextProcessor(
-            promptProcessor: promptProcessor,
+            settings: settings,
             getCurrentPrompt: getCurrentPrompt
         )
         let textInjector = TextInjector()

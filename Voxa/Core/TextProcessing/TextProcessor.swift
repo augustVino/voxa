@@ -10,16 +10,27 @@ import Foundation
 /// 文本处理管道：可选润色；空输入不调用润色，润色失败降级为原文
 /// 持有 getCurrentPrompt 闭包（可捕获 ModelContainer），故使用 @unchecked Sendable
 final class TextProcessor: @unchecked Sendable {
-    private let promptProcessor: any PromptProcessing
+    private let settings: AppSettings
     /// 获取当前人设的 system prompt；返回 nil 或空表示不润色（可在 MainActor 上读取 SwiftData）
     private let getCurrentPrompt: () async -> String?
 
     init(
-        promptProcessor: any PromptProcessing,
+        settings: AppSettings,
         getCurrentPrompt: @escaping () async -> String?
     ) {
-        self.promptProcessor = promptProcessor
+        self.settings = settings
         self.getCurrentPrompt = getCurrentPrompt
+    }
+
+    /// 创建使用最新配置的 PromptProcessor
+    private func makePromptProcessor() async -> PromptProcessor {
+        await MainActor.run {
+            PromptProcessor(
+                apiKey: settings.llmApiKey,
+                baseURL: settings.llmBaseURL,
+                model: settings.llmModel
+            )
+        }
     }
 
     /// 处理原始文本：空/空白直接返回空；若有人设则尝试润色，失败或空结果则返回原文
@@ -36,7 +47,9 @@ final class TextProcessor: @unchecked Sendable {
         print("[TextProcessor] 🚀 开始调用 LLM 润色...")
 
         do {
-            let polished = try await promptProcessor.process(text: trimmed, systemPrompt: systemPrompt)
+            // 使用最新配置创建 PromptProcessor
+            let processor = await makePromptProcessor()
+            let polished = try await processor.process(text: trimmed, systemPrompt: systemPrompt)
             print("[TextProcessor] ✨ 润色成功: \(polished)")
             return polished.isEmpty ? trimmed : polished
         } catch {
