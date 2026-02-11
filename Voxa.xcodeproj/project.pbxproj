@@ -23,6 +23,10 @@
 		073E41432F3986A10088A4CF /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E41402F3986A10088A4CF /* WaveformView.swift */; };
 		073E41442F3986A10088A4CF /* RecordingOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E41412F3986A10088A4CF /* RecordingOverlayView.swift */; };
 		073E41452F3986A10088A4CF /* OverlayPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E41422F3986A10088A4CF /* OverlayPanel.swift */; };
+		073E41462F3986A20088A4CF /* ToastPresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E41472F3986A20088A4CF /* ToastPresenting.swift */; };
+		073E41482F3986A30088A4CF /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E41492F3986A30088A4CF /* ToastView.swift */; };
+		073E414A2F3986A40088A4CF /* ToastPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E414B2F3986A40088A4CF /* ToastPanel.swift */; };
+		073E414C2F3986A50088A4CF /* ToastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E414D2F3986A50088A4CF /* ToastManager.swift */; };
 		07983A4F2F39CD7D00BD1EE1 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 07983A4E2F39CD7D00BD1EE1 /* KeyboardShortcuts */; };
 		07983A522F39CF1A00BD1EE1 /* KeyboardShortcutName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07983A502F39CF1A00BD1EE1 /* KeyboardShortcutName.swift */; };
 		B100000000000000000001 /* VoxaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100000000000000000001 /* VoxaApp.swift */; };
@@ -79,6 +83,10 @@
 		073E41402F3986A10088A4CF /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
 		073E41412F3986A10088A4CF /* RecordingOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingOverlayView.swift; sourceTree = "<group>"; };
 		073E41422F3986A10088A4CF /* OverlayPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayPanel.swift; sourceTree = "<group>"; };
+		073E41472F3986A20088A4CF /* ToastPresenting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastPresenting.swift; sourceTree = "<group>"; };
+		073E41492F3986A30088A4CF /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		073E414B2F3986A40088A4CF /* ToastPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastPanel.swift; sourceTree = "<group>"; };
+		073E414D2F3986A50088A4CF /* ToastManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastManager.swift; sourceTree = "<group>"; };
 		07983A502F39CF1A00BD1EE1 /* KeyboardShortcutName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardShortcutName.swift; sourceTree = "<group>"; };
 		A100000000000000000001 /* VoxaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoxaApp.swift; sourceTree = "<group>"; };
 		A100000000000000000002 /* KeyMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyMonitor.swift; sourceTree = "<group>"; };
@@ -173,6 +181,17 @@
 			path = Overlay;
 			sourceTree = "<group>";
 		};
+		073E414E2F3986A60088A4CF /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				073E41472F3986A20088A4CF /* ToastPresenting.swift */,
+				073E41492F3986A30088A4CF /* ToastView.swift */,
+				073E414B2F3986A40088A4CF /* ToastPanel.swift */,
+				073E414D2F3986A50088A4CF /* ToastManager.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		073E413B2F39862B0088A4CF /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -260,6 +279,7 @@
 			isa = PBXGroup;
 			children = (
 				073E41382F3985F70088A4CF /* Overlay */,
+				073E414E2F3986A60088A4CF /* Components */,
 				C100000000000000000007 /* MenuBar */,
 				F4C1000000000000000001 /* Settings */,
 			);
@@ -477,6 +497,10 @@
 				073E41432F3986A10088A4CF /* WaveformView.swift in Sources */,
 				073E41442F3986A10088A4CF /* RecordingOverlayView.swift in Sources */,
 				073E41452F3986A10088A4CF /* OverlayPanel.swift in Sources */,
+				073E41462F3986A20088A4CF /* ToastPresenting.swift in Sources */,
+				073E41482F3986A30088A4CF /* ToastView.swift in Sources */,
+				073E414A2F3986A40088A4CF /* ToastPanel.swift in Sources */,
+				073E414C2F3986A50088A4CF /* ToastManager.swift in Sources */,
 				073E41342F3985EB0088A4CF /* ZhipuSTTProvider.swift in Sources */,
 				073E41352F3985EB0088A4CF /* STTProvider.swift in Sources */,
 				073E41362F3985EB0088A4CF /* MultipartFormData.swift in Sources */,

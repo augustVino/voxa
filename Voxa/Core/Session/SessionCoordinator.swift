@@ -7,6 +7,19 @@
 
 import Foundation
 
+/// 便捷的 Toast 显示函数
+private func showToast(error message: String) {
+    Task { @MainActor in
+        ToastManager.shared.show(error: message)
+    }
+}
+
+private func showToast(warning message: String) {
+    Task { @MainActor in
+        ToastManager.shared.show(warning: message)
+    }
+}
+
 /// 会话状态
 enum SessionState: Equatable, Sendable {
     /// 空闲状态
@@ -151,6 +164,7 @@ final class SessionCoordinator: @unchecked Sendable {
             print("[SessionCoordinator] ❌ 录音启动失败: \(error)")
             state = .error(error.localizedDescription)
             await overlay?.hide(animated: true)
+            showToast(error: "录音启动失败，请检查麦克风权限")
             scheduleRecovery()
         }
     }
@@ -176,6 +190,7 @@ final class SessionCoordinator: @unchecked Sendable {
                 print("[SessionCoordinator] ⚠️ 录音时长过短,忽略")
                 state = .idle
                 await overlay?.hide(animated: true)
+                showToast(warning: "录音时长过短")
                 return
             }
 
@@ -186,6 +201,7 @@ final class SessionCoordinator: @unchecked Sendable {
             print("[SessionCoordinator] ❌ 停止录音失败: \(error)")
             state = .error(error.localizedDescription)
             await overlay?.hide(animated: true)
+            showToast(error: "录音停止失败")
             scheduleRecovery()
         }
     }
@@ -198,6 +214,7 @@ final class SessionCoordinator: @unchecked Sendable {
             print("[SessionCoordinator] ❌ STT 未配置")
             state = .error("请先配置 STT API Key")
             await overlay?.hide(animated: true)
+            showToast(error: "请先配置 STT API Key")
             scheduleRecovery()
             return
         }
@@ -231,6 +248,7 @@ final class SessionCoordinator: @unchecked Sendable {
                 print("[SessionCoordinator] ❌ 文本处理失败: \(error)")
                 state = .error("处理失败")
                 await overlay?.hide(animated: true)
+                showToast(error: "文本处理失败")
                 scheduleRecovery()
                 return
             }
@@ -248,6 +266,7 @@ final class SessionCoordinator: @unchecked Sendable {
             if !injected {
                 state = .error("注入失败")
                 await overlay?.hide(animated: true)
+                showToast(error: "文本注入失败，请重试")
                 scheduleRecovery()
                 return
             }
@@ -262,26 +281,34 @@ final class SessionCoordinator: @unchecked Sendable {
         } catch let error as STTError {
             print("[SessionCoordinator] ❌ 识别失败: \(error)")
 
+            let errorMessage: String
             switch error {
             case .unauthorized:
-                state = .error("API Key 无效,请检查配置")
+                errorMessage = "API Key 无效，请检查配置"
+                state = .error(errorMessage)
             case .timeout:
-                state = .error("网络超时,请检查网络连接")
+                errorMessage = "网络超时，请检查网络连接"
+                state = .error(errorMessage)
             case .networkError:
-                state = .error("网络错误,请检查网络连接")
+                errorMessage = "网络错误，请检查网络连接"
+                state = .error(errorMessage)
             case .serviceUnavailable:
-                state = .error("STT 服务暂时不可用")
+                errorMessage = "STT 服务暂时不可用"
+                state = .error(errorMessage)
             default:
-                state = .error(error.localizedDescription)
+                errorMessage = error.localizedDescription
+                state = .error(errorMessage)
             }
 
             await overlay?.hide(animated: true)
+            showToast(error: errorMessage)
             scheduleRecovery()
 
         } catch {
             print("[SessionCoordinator] ❌ 未知错误: \(error)")
             state = .error(error.localizedDescription)
             await overlay?.hide(animated: true)
+            showToast(error: "语音识别失败：\(error.localizedDescription)")
             scheduleRecovery()
         }
     }

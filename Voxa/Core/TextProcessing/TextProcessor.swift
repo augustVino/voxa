@@ -7,6 +7,13 @@
 
 import Foundation
 
+/// 便捷的 Toast 显示函数
+private func showToast(warning message: String) {
+    Task { @MainActor in
+        ToastManager.shared.show(warning: message)
+    }
+}
+
 /// 文本处理管道：可选润色；空输入不调用润色，润色失败降级为原文
 /// 持有 getCurrentPrompt 闭包（可捕获 ModelContainer），故使用 @unchecked Sendable
 final class TextProcessor: @unchecked Sendable {
@@ -61,6 +68,8 @@ final class TextProcessor: @unchecked Sendable {
             return polished.isEmpty ? trimmed : polished
         } catch {
             print("[TextProcessor] ❌ 润色失败: \(error.localizedDescription)")
+            // 润色失败时显示 Toast 提示用户
+            showToast(warning: "润色失败，已使用原文")
             return trimmed
         }
     }
