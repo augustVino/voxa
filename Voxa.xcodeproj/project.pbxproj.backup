@@ -352,7 +352,6 @@
 				E100000000000000000001 /* Sources */,
 				E100000000000000000002 /* Frameworks */,
 				E100000000000000000003 /* Resources */,
-				E100000000000000000006 /* Copy AppIcon.icns */,
 			);
 			buildRules = (
 			);
@@ -421,30 +420,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		E100000000000000000006 /* Copy AppIcon.icns */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Voxa/Resources/AppIcon.icns",
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/AppIcon.icns",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cp \"${SRCROOT}/Voxa/Resources/AppIcon.icns\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppIcon.icns\"
-";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXResourcesBuildPhase section */
 		E100000000000000000003 /* Resources */ = {
