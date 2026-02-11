@@ -18,6 +18,9 @@
 		073E41342F3985EB0088A4CF /* ZhipuSTTProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E41302F3985EB0088A4CF /* ZhipuSTTProvider.swift */; };
 		073E41352F3985EB0088A4CF /* STTProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E412F2F3985EB0088A4CF /* STTProvider.swift */; };
 		073E41362F3985EB0088A4CF /* MultipartFormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E412D2F3985EB0088A4CF /* MultipartFormData.swift */; };
+	073E41372F3986B00088A4CF /* STTProviderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E41382F3986B00088A4CF /* STTProviderType.swift */; };
+	073E413BA2F3986B20088A4CF /* STTProviderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E413C2F3986B20088A4CF /* STTProviderFactory.swift */; };
+	073E413DC2F3986B30088A4CF /* OpenAIWhisperProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E413E2F3986B30088A4CF /* OpenAIWhisperProvider.swift */; };
 		073E41392F3985F70088A4CF /* OverlayPresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E41372F3985F70088A4CF /* OverlayPresenting.swift */; };
 		073E413C2F39862B0088A4CF /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E413A2F39862B0088A4CF /* AppSettings.swift */; };
 		073E41432F3986A10088A4CF /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E41402F3986A10088A4CF /* WaveformView.swift */; };
@@ -78,6 +81,9 @@
 		073E412E2F3985EB0088A4CF /* STTError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STTError.swift; sourceTree = "<group>"; };
 		073E412F2F3985EB0088A4CF /* STTProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STTProvider.swift; sourceTree = "<group>"; };
 		073E41302F3985EB0088A4CF /* ZhipuSTTProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZhipuSTTProvider.swift; sourceTree = "<group>"; };
+	073E41382F3986B00088A4CF /* STTProviderType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STTProviderType.swift; sourceTree = "<group>"; };
+	073E413C2F3986B20088A4CF /* STTProviderFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STTProviderFactory.swift; sourceTree = "<group>"; };
+	073E413E2F3986B30088A4CF /* OpenAIWhisperProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIWhisperProvider.swift; sourceTree = "<group>"; };
 		073E41372F3985F70088A4CF /* OverlayPresenting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayPresenting.swift; sourceTree = "<group>"; };
 		073E413A2F39862B0088A4CF /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		073E41402F3986A10088A4CF /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
@@ -166,6 +172,9 @@
 				073E412E2F3985EB0088A4CF /* STTError.swift */,
 				073E412F2F3985EB0088A4CF /* STTProvider.swift */,
 				073E41302F3985EB0088A4CF /* ZhipuSTTProvider.swift */,
+				073E41382F3986B00088A4CF /* STTProviderType.swift */,
+				073E413C2F3986B20088A4CF /* STTProviderFactory.swift */,
+				073E413E2F3986B30088A4CF /* OpenAIWhisperProvider.swift */,
 			);
 			path = STT;
 			sourceTree = "<group>";
@@ -504,6 +513,9 @@
 				073E41342F3985EB0088A4CF /* ZhipuSTTProvider.swift in Sources */,
 				073E41352F3985EB0088A4CF /* STTProvider.swift in Sources */,
 				073E41362F3985EB0088A4CF /* MultipartFormData.swift in Sources */,
+				073E41372F3986B00088A4CF /* STTProviderType.swift in Sources */,
+				073E413BA2F3986B20088A4CF /* STTProviderFactory.swift in Sources */,
+				073E413DC2F3986B30088A4CF /* OpenAIWhisperProvider.swift in Sources */,
 				073E41282F3985D90088A4CF /* AudioLevelProvider.swift in Sources */,
 				07983A522F39CF1A00BD1EE1 /* KeyboardShortcutName.swift in Sources */,
 				073E41292F3985D90088A4CF /* AudioCapturing.swift in Sources */,

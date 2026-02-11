@@ -26,6 +26,17 @@ final class AppSettings {
     static let builtinDefaultPersonaPrompt = "让文本保持自然、清晰、口语化的语气，同时更精炼易读，要把句尾的句号去掉。"
     // MARK: - STT 配置
 
+    /// STT 提供商类型 (直接使用 UserDefaults)
+    var sttProviderType: STTProviderType {
+        get {
+            let rawValue = UserDefaults.standard.string(forKey: "sttProviderType") ?? STTProviderType.zhipu.rawValue
+            return STTProviderType(rawValue: rawValue) ?? .zhipu
+        }
+        set {
+            UserDefaults.standard.set(newValue.rawValue, forKey: "sttProviderType")
+        }
+    }
+
     /// STT API Key (智谱 API)，存 Keychain
     private var _sttApiKeyCache: String = ""
     var sttApiKey: String {
@@ -41,15 +52,40 @@ final class AppSettings {
         }
     }
 
-    /// STT 服务 Base URL
+    /// OpenAI STT API Key，存 Keychain
+    private var _openaiSttApiKeyCache: String = ""
+    var openaiSttApiKey: String {
+        get {
+            if _openaiSttApiKeyCache.isEmpty, let k = KeychainService.get(key: .openaiSttApiKey) {
+                _openaiSttApiKeyCache = k
+            }
+            return _openaiSttApiKeyCache
+        }
+        set {
+            KeychainService.set(key: .openaiSttApiKey, value: newValue)
+            _openaiSttApiKeyCache = newValue
+        }
+    }
+
+    /// STT 服务 Base URL (智谱)
     @ObservationIgnored
     @AppStorage("sttBaseURL")
     var sttBaseURL: String = "https://open.bigmodel.cn/api/paas/v4/audio/transcriptions"
 
-    /// STT 模型名称
+    /// STT 模型名称 (智谱)
     @ObservationIgnored
     @AppStorage("sttModel")
     var sttModel: String = "glm-asr-2512"
+
+    /// OpenAI STT Base URL
+    @ObservationIgnored
+    @AppStorage("openaiSttBaseURL")
+    var openaiSttBaseURL: String = "https://api.openai.com/v1/audio/transcriptions"
+
+    /// OpenAI STT 模型名称
+    @ObservationIgnored
+    @AppStorage("openaiSttModel")
+    var openaiSttModel: String = "whisper-1"
 
     /// 是否启用流式识别
     @ObservationIgnored
@@ -142,7 +178,36 @@ final class AppSettings {
 
     /// 检查 STT 配置是否完整
     var isSTTConfigured: Bool {
-        !sttApiKey.isEmpty && !sttBaseURL.isEmpty && !sttModel.isEmpty
+        switch sttProviderType {
+        case .zhipu:
+            return !sttApiKey.isEmpty && !sttBaseURL.isEmpty && !sttModel.isEmpty
+        case .openai:
+            return !openaiSttApiKey.isEmpty && !openaiSttBaseURL.isEmpty && !openaiSttModel.isEmpty
+        }
+    }
+
+    /// 获取当前提供商的 API Key
+    var currentSTTApiKey: String {
+        switch sttProviderType {
+        case .zhipu: return sttApiKey
+        case .openai: return openaiSttApiKey
+        }
+    }
+
+    /// 获取当前提供商的 Base URL
+    var currentSTTBaseURL: String {
+        switch sttProviderType {
+        case .zhipu: return sttBaseURL
+        case .openai: return openaiSttBaseURL
+        }
+    }
+
+    /// 获取当前提供商的模型名称
+    var currentSTTModel: String {
+        switch sttProviderType {
+        case .zhipu: return sttModel
+        case .openai: return openaiSttModel
+        }
     }
 
     /// 检查 LLM 配置是否完整（润色用）
@@ -157,6 +222,7 @@ final class AppSettings {
     init() {
         KeychainService.migrateFromUserDefaultsIfNeeded()
         _sttApiKeyCache = KeychainService.get(key: .sttApiKey) ?? ""
+        _openaiSttApiKeyCache = KeychainService.get(key: .openaiSttApiKey) ?? ""
         _llmApiKeyCache = KeychainService.get(key: .llmApiKey) ?? ""
     }
 }

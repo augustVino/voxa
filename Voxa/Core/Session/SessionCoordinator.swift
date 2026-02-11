@@ -219,9 +219,18 @@ final class SessionCoordinator: @unchecked Sendable {
             return
         }
 
-        // 使用最新的 API Key 创建 provider
-        let apiKey = await settings.sttApiKey
-        sttProvider = ZhipuSTTProvider(apiKey: apiKey)
+        // 使用工厂创建 provider，支持多提供商
+        let providerType = await settings.sttProviderType
+        let apiKey = await settings.currentSTTApiKey
+        let baseURL = await settings.currentSTTBaseURL
+        let model = await settings.currentSTTModel
+
+        sttProvider = STTProviderFactory.createProvider(
+            type: providerType,
+            apiKey: apiKey,
+            baseURL: baseURL,
+            model: model
+        )
 
         print("[SessionCoordinator] 🔄 开始语音识别...")
         state = .transcribing

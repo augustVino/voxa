@@ -16,6 +16,7 @@ enum KeychainService {
     enum Key: String, CaseIterable {
         case sttApiKey = "sttApiKey"
         case llmApiKey = "llmApiKey"
+        case openaiSttApiKey = "openaiSttApiKey"
     }
 
     private static let migrationFlagKey = "voxa.apiKey.migratedToKeychain"
