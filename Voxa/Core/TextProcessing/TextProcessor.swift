@@ -38,6 +38,13 @@ final class TextProcessor: @unchecked Sendable {
         let trimmed = rawText.trimmingCharacters(in: .whitespacesAndNewlines)
         if trimmed.isEmpty { return "" }
 
+        // 检查润色开关是否启用
+        let polishingEnabled = await MainActor.run { settings.polishingEnabled }
+        if !polishingEnabled {
+            print("[TextProcessor] ⚠️ 润色功能已关闭，直接返回原文")
+            return trimmed
+        }
+
         guard let systemPrompt = await getCurrentPrompt(), !systemPrompt.isEmpty else {
             print("[TextProcessor] ⚠️ 无 systemPrompt，跳过润色，返回原文")
             return trimmed

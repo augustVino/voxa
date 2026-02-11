@@ -83,6 +83,11 @@ final class AppSettings {
     @AppStorage("llmModel")
     var llmModel: String = "glm-4"
 
+    /// 润色功能开关（默认关闭）
+    @ObservationIgnored
+    @AppStorage("polishingEnabled")
+    var polishingEnabled: Bool = false
+
     /// 当前人设 ID，空表示不润色
     @ObservationIgnored
     @AppStorage("activePersonaId")
@@ -142,7 +147,7 @@ final class AppSettings {
 
     /// 检查 LLM 配置是否完整（润色用）
     var isLLMConfigured: Bool {
-        !llmApiKey.isEmpty && !llmBaseURL.isEmpty && !llmModel.isEmpty
+        polishingEnabled && !llmApiKey.isEmpty && !llmBaseURL.isEmpty && !llmModel.isEmpty
     }
 
     // MARK: - Singleton

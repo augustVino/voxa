@@ -19,6 +19,7 @@ struct ModelSettingsView: View {
     @State private var llmApiKey: String = ""
     @State private var llmBaseURL: String = ""
     @State private var llmModel: String = ""
+    @State private var polishingEnabled: Bool = false
 
     enum Field: Hashable {
         case sttApiKey, sttBaseURL, sttModel
@@ -44,15 +45,22 @@ struct ModelSettingsView: View {
                     .onSubmit { saveField(.sttModel) }
             }
             Section("LLM（润色）") {
-                SecureField("API Key", text: $llmApiKey)
-                    .focused($focusedField, equals: .llmApiKey)
-                    .onSubmit { saveField(.llmApiKey) }
-                TextField("Base URL", text: $llmBaseURL, prompt: Text("https://api.openai.com/v1"))
-                    .focused($focusedField, equals: .llmBaseURL)
-                    .onSubmit { saveField(.llmBaseURL) }
-                TextField("模型名称", text: $llmModel)
-                    .focused($focusedField, equals: .llmModel)
-                    .onSubmit { saveField(.llmModel) }
+                Toggle("启用润色", isOn: $polishingEnabled)
+                    .onChange(of: polishingEnabled) { _, _ in
+                        settings.polishingEnabled = polishingEnabled
+                    }
+
+                if polishingEnabled {
+                    SecureField("API Key", text: $llmApiKey)
+                        .focused($focusedField, equals: .llmApiKey)
+                        .onSubmit { saveField(.llmApiKey) }
+                    TextField("Base URL", text: $llmBaseURL, prompt: Text("https://api.openai.com/v1"))
+                        .focused($focusedField, equals: .llmBaseURL)
+                        .onSubmit { saveField(.llmBaseURL) }
+                    TextField("模型名称", text: $llmModel)
+                        .focused($focusedField, equals: .llmModel)
+                        .onSubmit { saveField(.llmModel) }
+                }
             }
 
             Section {
@@ -74,6 +82,7 @@ struct ModelSettingsView: View {
             llmApiKey = settings.llmApiKey
             llmBaseURL = settings.llmBaseURL
             llmModel = settings.llmModel
+            polishingEnabled = settings.polishingEnabled
         }
     }
 
