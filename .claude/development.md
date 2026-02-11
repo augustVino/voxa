@@ -1,5 +1,20 @@
 # Development Guide
 
+## Builtin Persona
+
+App includes a built-in default persona (`AppSettings.builtinDefaultPersonaID`):
+
+**Properties**:
+- `id`: `AppSettings.builtinDefaultPersonaID`
+- `name`: `AppSettings.builtinDefaultPersonaName`
+- `prompt`: `AppSettings.builtinDefaultPersonaPrompt`
+- `sortOrder`: 0 (appears first in list)
+
+**Behavior**:
+- Created on first launch if not exists (in `VoxaApp.swift`)
+- Automatically set as active if no persona selected
+- Custom personas start from `sortOrder = 1`
+
 ## Permission Handling
 
 ### Required Permissions
