@@ -11,8 +11,11 @@ on:
 
 jobs:
   build:
-    name: Build Voxa
+    name: Build Voxa (${{ matrix.arch }})
     runs-on: macos-latest
+    strategy:
+      matrix:
+        arch: [apple-silicon, intel]
 
     steps:
       - name: Checkout Repository
@@ -24,29 +27,43 @@ jobs:
       - name: Resolve Package Dependencies
         run: xcodebuild -resolvePackageDependencies -project Voxa.xcodeproj
 
-      - name: Build Application
+      - name: Build Application (${{ matrix.arch }})
         run: |
+          if [ "${{ matrix.arch }}" = "apple-silicon" ]; then
+            ARCH="arm64"
+          else
+            ARCH="x86_64"
+          fi
+
           xcodebuild build \
             -project Voxa.xcodeproj \
             -scheme Voxa \
             -configuration Release \
-            -derivedDataPath DerivedData \
+            -derivedDataPath DerivedData-${{ matrix.arch }} \
+            -arch $ARCH \
+            ONLY_ACTIVE_ARCH=NO \
             CODE_SIGN_IDENTITY=- \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO
 
-      - name: Package Application
+      - name: Package Application (${{ matrix.arch }})
         run: |
-          APP_PATH=$(find DerivedData/Build/Products -name "Voxa.app" -type d | head -n 1)
-          mkdir -p artifacts
-          cp -R "$APP_PATH" artifacts/Voxa.app
-          cd artifacts && zip -r -y Voxa.zip Voxa.app
+          APP_PATH=$(find DerivedData-${{ matrix.arch }}/Build/Products -name "Voxa.app" -type d | head -n 1)
+          mkdir -p artifacts-${{ matrix.arch }}
+          cp -R "$APP_PATH" artifacts-${{ matrix.arch }}/Voxa.app
 
-      - name: Upload Build Artifacts
+          # 验证架构
+          echo "=== 验证二进制架构 ==="
+          file "artifacts-${{ matrix.arch }}/Voxa.app/Contents/MacOS/Voxa"
+
+          # 打包
+          cd artifacts-${{ matrix.arch }} && zip -r -y Voxa-${{ matrix.arch }}.zip Voxa.app
+
+      - name: Upload Build Artifacts (${{ matrix.arch }})
         uses: actions/upload-artifact@v4
         with:
-          name: Voxa-macOS-${{ github.sha }}
-          path: artifacts/Voxa.zip
+          name: Voxa-macOS-${{ matrix.arch }}-${{ github.sha }}
+          path: artifacts-${{ matrix.arch }}/Voxa-${{ matrix.arch }}.zip
           retention-days: 30
           if-no-files-found: error
 
@@ -84,20 +101,25 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Download Build Artifacts
+      - name: Download Build Artifacts (Apple Silicon)
         uses: actions/download-artifact@v4
         with:
-          name: Voxa-macOS-${{ github.sha }}
-          path: artifacts
+          name: Voxa-macOS-apple-silicon-${{ github.sha }}
+          path: artifacts-apple-silicon
 
-      - name: Verify Download
+      - name: Download Build Artifacts (Intel)
+        uses: actions/download-artifact@v4
+        with:
+          name: Voxa-macOS-intel-${{ github.sha }}
+          path: artifacts-intel
+
+      - name: Verify Downloads
         run: |
-          echo "Downloaded files:"
-          ls -la artifacts/
-          echo "---"
-          echo "Copying Voxa.zip to root directory..."
-          cp artifacts/Voxa.zip Voxa.zip
-          ls -la Voxa.zip
+          echo "=== Apple Silicon 版本 ==="
+          ls -la artifacts-apple-silicon/
+          echo ""
+          echo "=== Intel 版本 ==="
+          ls -la artifacts-intel/
 
       - name: Extract Version
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
@@ -109,9 +131,15 @@ jobs:
           ## Voxa $VERSION
 
           ### 安装方法
-          1. 下载 Voxa.zip
+          1. 根据你的 Mac 类型下载对应的版本
           2. 解压得到 Voxa.app
           3. 将 Voxa.app 移动到应用程序文件夹
+
+          ### 版本选择
+          - **Voxa-apple-silicon.zip**: 适用于 M1/M2/M3/M4 芯片的 Mac
+          - **Voxa-intel.zip**: 适用于 Intel 芯片的 Mac
+
+          不确定？点击菜单栏左上角  → 关于本机 → 查看"芯片"或"处理器"
 
           ### 变更日志
           EOF
@@ -127,6 +155,8 @@ jobs:
           tag_name: ${{ github.ref_name }}
           name: Voxa ${{ env.VERSION }}
           body_path: release-notes.md
-          files: Voxa.zip
+          files: |
+            artifacts-apple-silicon/Voxa-apple-silicon.zip
+            artifacts-intel/Voxa-intel.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
